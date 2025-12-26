@@ -1,0 +1,876 @@
+{
+  "name": "Analyze Video Tiktok",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ $json.videoUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "https://www.tiktok.com/"
+            },
+            {
+              "name": "Accept",
+              "value": "video/mp4,video/webm,video/*;q=0.9,application/octet-stream;q=0.8"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "en-US,en;q=0.5"
+            },
+            {
+              "name": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "name": "Cookie",
+              "value": "={{ $json.cookies }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "bcd7612b-885c-4694-9c70-68966835f756",
+      "name": "Output video file without watermark",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        740,
+        -100
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Goog-Upload-Command",
+              "value": "start, upload, finalize"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Length",
+              "value": "={{ $binary.data.fileSize }}"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Type",
+              "value": "video/mp4"
+            },
+            {
+              "name": "Content-Type",
+              "value": "video/mp4"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1060,
+        -260
+      ],
+      "id": "16f88688-c498-46f9-868a-c80c87c22d8e",
+      "name": "upload",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "mWvSViee7pKskeJz",
+          "name": "accgame"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"role\": \"user\",\n    \"parts\": [\n      {\n        \"text\": \"Hãy summary cho tôi nội dung của video. Ngoài ra cho tôi thông tin về timeline của video nữa nhé, chú ý mỗi mốc timeline cần phân biệt bằng dấu xuống dòng. Kết quả trả ra phải định dạng plain text và không có các ký tự markdown như *, **..v...v.\"\n      },\n      {\n        \"fileData\": {\n          \"mimeType\": \"{{ $('upload').item.json.file.mimeType }}\",\n          \"fileUri\": \"{{ $('upload').item.json.file.uri }}\"\n        }\n      }\n    ]\n  }],\n  \"generationConfig\": {\n    \"temperature\": 1.4,\n    \"topK\": 40,\n    \"topP\": 0.95,\n    \"maxOutputTokens\": 8192,\n    \"responseMimeType\": \"text/plain\",\n    \"responseModalities\": [\"text\"]\n  }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1420,
+        -260
+      ],
+      "id": "51475ded-cc54-4ff1-b5d6-8bf3070cdf89",
+      "name": "generative",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "mWvSViee7pKskeJz",
+          "name": "accgame"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1240,
+        -260
+      ],
+      "id": "b2a9bbc3-6329-4933-b19f-3f24393d1ef5",
+      "name": "Wait",
+      "webhookId": "b3a16fb5-bc27-4a1a-8bc0-2816e8eb6722"
+    },
+    {
+      "parameters": {
+        "content": "## Anlyze Vieo",
+        "height": 320,
+        "width": 1480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1000,
+        -360
+      ],
+      "typeVersion": 1,
+      "id": "e967d5e6-a085-46e1-a1d4-f739e3e16ce1",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        -140
+      ],
+      "id": "a789beb5-41ef-40b2-bdcc-5ea01e469d82",
+      "name": "flash 2.0 tiktok",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "lt87ELwUZFayDV7Y",
+          "name": "my-frist-ai-agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## Nội dung gốc: \n{{ $('generative').item.json.candidates[0].content.parts[0].text }}\n\n## Key gốc:\n{{ $json.output.keys }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Overview:\n- Bạn là một AI Agent chuyên về tạo nội dung và biên tập video cho các nền tảng mạng xã hội.\n\n## Yêu cầu:\n- Nhiệm vụ của bạn là tiếp nhận thông tin tóm tắt từ video đã phân tích cùng với các key chính của video, sau đó tạo ra một phiên bản nội dung mới hấp dẫn hơn với hai phần: \n\n  - \"news_content\" là nội dung caption cho video, có thể dùng để đăng tải lên facebook, do đó cần ngắn gọn, lôi cuốn, kích thích sự tò mò và giữ chân người xem\n\n  - \"news_script\" là script gợi ý chi tiết để xây dựng một video thực tế dựa trên news_content. Mỗi cảnh khác nhau cần phân biệt bằng dấu xuống hàng. Ngoài mô tả bối cảnh, cần thiết hãy để thêm vào voice over và thời lượng cảnh quay từ giây bao nhiêu đến bao nhiêu.\n\n## Lưu ý:\n- Nội dung cần được trình bày bằng văn bản thuần túy, có cấu trúc logic, chính xác, đáng tin cậy và không sử dụng định dạng markdown.\n- new_script cần phải đảm bảo mới lạ, có sự khác biệt với nội dung gốc trong input."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        1960,
+        -320
+      ],
+      "id": "055643f4-0a78-4410-b451-c1b2c98b3bf2",
+      "name": "Creator Tiktok"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.candidates[0].content.parts[0].text }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Bạn là một chuyên gia về content creator, có khả năng phân tích kịch bản tốt.\n\nNhiệm vụ của bạn là xem nội dung tóm tắt video được gửi đến, sau đó tóm tắt thành 5 key chính, mỗi key phân cách bởi 1 gạch đầu dòng."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1620,
+        -320
+      ],
+      "id": "73703aef-db45-455d-ba47-878850569491",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"news_content\": \"Content mới\",\n\t\"news_script\": \"script video mới\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2120,
+        -140
+      ],
+      "id": "5baabeb3-3053-49e9-962f-33728fc2dd10",
+      "name": "News Output"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"keys\":\"5 key chính đúc kết được từ nội dung video kể trên, mỗi key phân cách bằng một gạch đầu dòng\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        -140
+      ],
+      "id": "963d2f94-4094-47b4-bcdf-f758f3d04101",
+      "name": "Analyze Key"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Link Drive",
+        "height": 260,
+        "width": 880,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        980,
+        40
+      ],
+      "typeVersion": 1,
+      "id": "1642d4dd-a354-41ab-a41e-84275848d6b7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1nLbKmALgCESIl29GvA2PGfsGfBtCfwkY",
+          "mode": "list",
+          "cachedResultName": "video_tiktok_nowatermask",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1nLbKmALgCESIl29GvA2PGfsGfBtCfwkY"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1060,
+        120
+      ],
+      "id": "c42fe1ea-4793-4494-8291-0e157eac315c",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "e5m1Lngzxn42ydJD",
+          "name": "Upload_GGDrive"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5a3e3666-8098-471f-ab72-9a6ad95c373d",
+              "name": "url",
+              "value": "={{ $json.webViewLink }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        120
+      ],
+      "id": "e1b6c78f-4e3d-4154-95f8-b1f76478f6f4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1VJuo1Vk5hhG-aHZhwj14kNY0koKYnug4Y7zBNnx1xV8",
+          "mode": "list",
+          "cachedResultName": "Video Tiktok Analyze Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VJuo1Vk5hhG-aHZhwj14kNY0koKYnug4Y7zBNnx1xV8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "demo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VJuo1Vk5hhG-aHZhwj14kNY0koKYnug4Y7zBNnx1xV8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "=",
+            "Tóm Tắt Video Gốc": "={{ $('generative').item.json.candidates[0].content.parts[0].text }}",
+            "Key Video Gốc": "={{ $('Basic LLM Chain').item.json.output.keys }}",
+            "Nội Dung Mới Cải Tiến": "={{ $json.output.news_content }}",
+            "Gợi Ý Script Mới": "={{ $json.output.news_script }}",
+            "Link Tiktok": "={{ $('On form submission').item.json.URL }}"
+          },
+          "matchingColumns": [
+            "Link Tiktok"
+          ],
+          "schema": [
+            {
+              "id": "Link Tiktok",
+              "displayName": "Link Tiktok",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Tóm Tắt Video Gốc",
+              "displayName": "Tóm Tắt Video Gốc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Key Video Gốc",
+              "displayName": "Key Video Gốc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Nội Dung Mới Cải Tiến",
+              "displayName": "Nội Dung Mới Cải Tiến",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Gợi Ý Script Mới",
+              "displayName": "Gợi Ý Script Mới",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "URL No WaterMask",
+              "displayName": "URL No WaterMask",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2300,
+        -320
+      ],
+      "id": "2d160d63-d840-46f8-82f3-917c3bce2c50",
+      "name": "update_content_tiktok",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dsY2K22wq17Cmsb3",
+          "name": "minhquy"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1VJuo1Vk5hhG-aHZhwj14kNY0koKYnug4Y7zBNnx1xV8",
+          "mode": "list",
+          "cachedResultName": "Video Tiktok Analyze Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VJuo1Vk5hhG-aHZhwj14kNY0koKYnug4Y7zBNnx1xV8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "demo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VJuo1Vk5hhG-aHZhwj14kNY0koKYnug4Y7zBNnx1xV8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $json.row_number }}",
+            "URL No WaterMask": "={{ $('Google Drive').item.json.webViewLink }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Link Tiktok",
+              "displayName": "Link Tiktok",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Tóm Tắt Video Gốc",
+              "displayName": "Tóm Tắt Video Gốc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Key Video Gốc",
+              "displayName": "Key Video Gốc",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nội Dung Mới Cải Tiến",
+              "displayName": "Nội Dung Mới Cải Tiến",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Gợi Ý Script Mới",
+              "displayName": "Gợi Ý Script Mới",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "URL No WaterMask",
+              "displayName": "URL No WaterMask",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1680,
+        120
+      ],
+      "id": "2fd12803-fd8d-4bcf-9431-69e1d0f704df",
+      "name": "update_url",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dsY2K22wq17Cmsb3",
+          "name": "minhquy"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.URL }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/91.0.4472.124"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "d1861cd1-6833-4607-a37f-42d6c0d3ad0a",
+      "name": "Video Page Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        320,
+        -100
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.first().json.data;\nconst headers = $input.first().json.headers || {};\nconst cookies = headers['set-cookie'] || [];\n\nif (!html) {\n  throw new Error(\"HTML body is undefined. Check the previous node's output.\");\n}\nconst regex = /<script id=\"__UNIVERSAL_DATA_FOR_REHYDRATION__\" type=\"application\\/json\">([\\s\\S]*?)<\\/script>/;\nconst match = html.match(regex);\n\nif (match) {\n  const jsonStr = match[1];\n  const data = JSON.parse(jsonStr);\n  const videoUrl = data?.__DEFAULT_SCOPE__?.[\"webapp.video-detail\"]?.itemInfo?.itemStruct?.video?.playAddr;\n  if (!videoUrl) {\n    throw new Error(\"Could not find video URL in the JSON data.\");\n  }\n  return [{ json: { videoUrl, cookies: cookies.join('; ') } }];\n} else {\n  throw new Error(\"Could not find __UNIVERSAL_DATA_FOR_REHYDRATION__ script in the HTML.\");\n}"
+      },
+      "id": "34db19fd-97e8-46c0-ae1b-cdec6f3cb5d3",
+      "name": "Raw Video URL",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        520,
+        -100
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "formTitle": "Analyze Video",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "URL",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        120,
+        -100
+      ],
+      "id": "a00564c4-8ded-403d-bf6f-761da67d34b0",
+      "name": "On form submission",
+      "webhookId": "cb3e5e6a-da01-4683-8279-e6fafd8b1407"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1VJuo1Vk5hhG-aHZhwj14kNY0koKYnug4Y7zBNnx1xV8",
+          "mode": "list",
+          "cachedResultName": "Video Tiktok Analyze Content",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VJuo1Vk5hhG-aHZhwj14kNY0koKYnug4Y7zBNnx1xV8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "demo",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VJuo1Vk5hhG-aHZhwj14kNY0koKYnug4Y7zBNnx1xV8/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Link Tiktok",
+              "lookupValue": "={{ $('On form submission').item.json.URL }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1500,
+        120
+      ],
+      "id": "9466d5bc-3cad-4134-9810-6cb876260413",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dsY2K22wq17Cmsb3",
+          "name": "minhquy"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Qi Học AI & Automation",
+        "height": 80,
+        "width": 440,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1160,
+        -540
+      ],
+      "typeVersion": 1,
+      "id": "37c64e4c-41db-462b-a8f8-9e4f5fea66fc",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Output video file without watermark": {
+      "main": [
+        [
+          {
+            "node": "upload",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "upload": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generative": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "generative",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "flash 2.0 tiktok": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Creator Tiktok",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Creator Tiktok": {
+      "main": [
+        [
+          {
+            "node": "update_content_tiktok",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Creator Tiktok",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News Output": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Creator Tiktok",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Key": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video Page Data": {
+      "main": [
+        [
+          {
+            "node": "Raw Video URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Raw Video URL": {
+      "main": [
+        [
+          {
+            "node": "Output video file without watermark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Video Page Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "update_url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Jakarta",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "c58493e1-1ea0-43d0-85c6-be39b16643bc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "99bb852dcc3552c3d88ab95d0ac8b2f305fe468bdc1a11804fc1762bd072fe04"
+  },
+  "id": "sOCMIB7bNUdasbuk",
+  "tags": []
+}
