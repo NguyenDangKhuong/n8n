@@ -59,33 +59,46 @@ services:
     container_name: postiz
     restart: always
     ports:
-      - "4200:4200"  # Postiz web UI
-      - "3000:3000"  # Postiz API
+      - "5000:5000"  # Postiz Application (Frontend + Backend)
     environment:
+      # === Required Settings
+      - MAIN_URL=${POSTIZ_FRONTEND_URL:-http://localhost:5000}
+      - FRONTEND_URL=${POSTIZ_FRONTEND_URL:-http://localhost:5000}
+      - NEXT_PUBLIC_BACKEND_URL=${POSTIZ_BACKEND_URL:-http://localhost:5000}/api
+      - BACKEND_INTERNAL_URL=http://localhost:3000
+      - IS_GENERAL=true
+      - DISABLE_REGISTRATION=false
+      
       # Database
       - DATABASE_URL=postgresql://postiz:${POSTGRES_PASSWORD:-postiz_secure_pass_123}@postgres:5432/postiz
       
       # Redis
       - REDIS_URL=redis://redis:6379
       
-      # Application URLs (sẽ dùng ngrok sau)
-      - FRONTEND_URL=${POSTIZ_FRONTEND_URL:-http://localhost:4200}
-      - BACKEND_URL=${POSTIZ_BACKEND_URL:-http://localhost:3000}
-      - NEXT_PUBLIC_BACKEND_URL=${POSTIZ_BACKEND_URL:-http://localhost:3000}
-      
-      # Upload directory
-      - UPLOAD_DIRECTORY=/uploads
-      
       # Security
       - JWT_SECRET=${JWT_SECRET:-your_random_jwt_secret_change_this_in_production}
       
-      # TikTok App Credentials (điền sau khi setup TikTok Dev App)
+      # === Storage Settings
+      - STORAGE_PROVIDER=local
+      - UPLOAD_DIRECTORY=/uploads
+      - NEXT_PUBLIC_UPLOAD_DIRECTORY=/uploads
+      
+      # === Social Media API Settings
+      # TikTok
       - TIKTOK_CLIENT_ID=${TIKTOK_CLIENT_ID:-}
       - TIKTOK_CLIENT_SECRET=${TIKTOK_CLIENT_SECRET:-}
+      
+      # Facebook
+      - FACEBOOK_APP_ID=${FACEBOOK_APP_ID:-}
+      - FACEBOOK_APP_SECRET=${FACEBOOK_APP_SECRET:-}
+      
+      # === Developer Settings
+      - NX_ADD_PLUGINS=false
       
       # Timezone
       - TZ=Asia/Ho_Chi_Minh
     volumes:
+      - postiz_config:/config
       - postiz_uploads:/uploads
     networks:
       - app_network
@@ -94,6 +107,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+
+
 
 networks:
   app_network:
@@ -105,6 +120,8 @@ volumes:
   postgres_data:
     driver: local
   redis_data:
+    driver: local
+  postiz_config:
     driver: local
   postiz_uploads:
     driver: local
