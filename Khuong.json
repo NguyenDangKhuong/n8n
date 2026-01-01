@@ -1,0 +1,215 @@
+{
+  "name": "Khuong",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        400
+      ],
+      "id": "294f5f7f-756f-4baa-8e69-2bbe73b82747",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fda05ec8-3628-42ae-bf85-e21933209a62",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -384,
+        16
+      ],
+      "id": "8a2568ca-3325-4922-8a2c-d38e6d01ddde",
+      "name": "Webhook",
+      "webhookId": "fda05ec8-3628-42ae-bf85-e21933209a62"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "timeout": 6000000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        288
+      ],
+      "id": "623c5c6c-2718-49ba-85f9-e775b1de5a8a",
+      "name": "OpenAI Chat Model",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "s68VwQ7zAmVodYID",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        384,
+        -48
+      ],
+      "id": "e346270b-6810-4efb-9a01-202da73e3cab",
+      "name": "Trả lời bằng text"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/setWebhook",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://n8n.thetaphoa.store/webhook/fda05ec8-3628-42ae-bf85-e21933209a62"
+            },
+            {
+              "name": "secret_token",
+              "value": "secret_token_khuong-zalo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -384,
+        176
+      ],
+      "id": "605afa03-a8cc-4b66-9dd6-3529ee324605",
+      "name": "Web hook nhận mess bên zalo"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Trả lời câu nhắn tin của user nha:  {{ $json.body.message.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -16,
+        160
+      ],
+      "id": "1ff3dbcc-c6aa-4c50-bba0-9c3988bc579b",
+      "name": "AI local ubbutu"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/sendPhoto",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=chat_id",
+              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
+            },
+            {
+              "name": "caption",
+              "value": "My photo"
+            },
+            {
+              "name": "photo",
+              "value": "https://placehold.co/600x400"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        384,
+        240
+      ],
+      "id": "001a06d9-17e7-4c8a-ac0b-b695d8d50a64",
+      "name": "Trả lời bằng photo"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI local ubbutu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI local ubbutu",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI local ubbutu": {
+      "main": [
+        [
+          {
+            "node": "Trả lời bằng text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
+  },
+  "versionId": "0fca8339-4938-401d-ae28-992b4f1b56ee",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "86069d55abeb184a8e9081c44449d343940385668d1850b3b28e6671ebbcde44"
+  },
+  "id": "UXAMvl3U33MpX0tK",
+  "tags": []
+}

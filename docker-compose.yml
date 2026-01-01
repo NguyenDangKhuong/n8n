@@ -9,12 +9,18 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=admin
-      - N8N_BASIC_AUTH_PASSWORD=changeme123
       - GENERIC_TIMEZONE=Asia/Ho_Chi_Minh
+      - WEBHOOK_URL=https://n8n.thetaphoa.store/
+      - N8N_PROTOCOL=https
+      - N8N_HOST=n8n.thetaphoa.store
+      - N8N_PROXY_HOPS=1
+      - N8N_SKIP_WEBHOOK_AUTHENTICATION=true
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_DISABLE_PRODUCTION_MAIN_PROCESS=true
+      - N8N_SKIP_WEBHOOK_DEREGISTRATION_SHUTDOWN=true
     volumes:
       - n8n_data:/home/node/.n8n
+      - ./local-files:/files #maps a folder for local files
     networks:
       - n8n_network
 
