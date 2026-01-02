@@ -2,17 +2,6 @@
   "name": "Khuong",
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -368,
-        400
-      ],
-      "id": "294f5f7f-756f-4baa-8e69-2bbe73b82747",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
       "parameters": {
         "httpMethod": "POST",
         "path": "fda05ec8-3628-42ae-bf85-e21933209a62",
@@ -21,112 +10,13 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -384,
-        16
+        -2352,
+        -16
       ],
       "id": "8a2568ca-3325-4922-8a2c-d38e6d01ddde",
       "name": "Webhook",
-      "webhookId": "fda05ec8-3628-42ae-bf85-e21933209a62"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4.1-mini"
-        },
-        "builtInTools": {},
-        "options": {
-          "timeout": 6000000
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        -64,
-        288
-      ],
-      "id": "623c5c6c-2718-49ba-85f9-e775b1de5a8a",
-      "name": "OpenAI Chat Model",
-      "retryOnFail": true,
-      "alwaysOutputData": true,
-      "credentials": {
-        "openAiApi": {
-          "id": "s68VwQ7zAmVodYID",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/sendMessage",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "chat_id",
-              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
-            },
-            {
-              "name": "text",
-              "value": "={{ $json.output }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
-      "position": [
-        384,
-        -48
-      ],
-      "id": "e346270b-6810-4efb-9a01-202da73e3cab",
-      "name": "Trả lời bằng text"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/setWebhook",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "url",
-              "value": "https://n8n.thetaphoa.store/webhook/fda05ec8-3628-42ae-bf85-e21933209a62"
-            },
-            {
-              "name": "secret_token",
-              "value": "secret_token_khuong-zalo"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
-      "position": [
-        -384,
-        176
-      ],
-      "id": "605afa03-a8cc-4b66-9dd6-3529ee324605",
-      "name": "Web hook nhận mess bên zalo"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Trả lời câu nhắn tin của user nha:  {{ $json.body.message.text }}",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1,
-      "position": [
-        -16,
-        160
-      ],
-      "id": "1ff3dbcc-c6aa-4c50-bba0-9c3988bc579b",
-      "name": "AI local ubbutu"
+      "webhookId": "fda05ec8-3628-42ae-bf85-e21933209a62",
+      "alwaysOutputData": false
     },
     {
       "parameters": {
@@ -154,42 +44,1180 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        384,
-        240
+        -1808,
+        112
       ],
       "id": "001a06d9-17e7-4c8a-ac0b-b695d8d50a64",
-      "name": "Trả lời bằng photo"
+      "name": "Trả lời bằng photo trên zalo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
+            },
+            {
+              "name": "=text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1648,
+        -96
+      ],
+      "id": "e346270b-6810-4efb-9a01-202da73e3cab",
+      "name": "Trả lời bằng text zalo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/setWebhook",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://n8n.thetaphoa.store/webhook/fda05ec8-3628-42ae-bf85-e21933209a62"
+            },
+            {
+              "name": "secret_token",
+              "value": "secret_token_khuong-zalo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2352,
+        128
+      ],
+      "id": "605afa03-a8cc-4b66-9dd6-3529ee324605",
+      "name": "verify zalo bot"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/sendChatAction",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $json.body.message.chat.id }}"
+            },
+            {
+              "name": "action",
+              "value": "typing"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2064,
+        -160
+      ],
+      "id": "afb58d6f-ba66-4c8f-bb2c-86cf46256ee6",
+      "name": "typing zalo "
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Trả lời câu nhắn tin của user nha: {{ $json.body.message.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -2080,
+        0
+      ],
+      "id": "549dd35b-3ff4-4493-bd29-2deee8404a1a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2032,
+        192
+      ],
+      "id": "abb5ceb9-5bd5-4a1a-82f7-02ab35fee086",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "jqPnZnGgMfaIpTwh",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "timeout": 6000000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -2160,
+        176
+      ],
+      "id": "623c5c6c-2718-49ba-85f9-e775b1de5a8a",
+      "name": "AI Local LLM Ubuntu",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "s68VwQ7zAmVodYID",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Upload reel facebook",
+        "formFields": {
+          "values": [
+            {
+              "fieldName": "Video",
+              "fieldLabel": "Đăng video",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "requiredField": true
+            },
+            {
+              "fieldName": "Title",
+              "fieldLabel": "Title",
+              "placeholder": "nhập mô tả video"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.4,
+      "position": [
+        -976,
+        -1184
+      ],
+      "id": "c64950a1-47ba-4553-a5c2-10081498417c",
+      "name": "On form submission",
+      "webhookId": "9bf3d816-8a79-4dc2-a08c-d4a43f186f45"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        496,
+        -48
+      ],
+      "id": "d6badfd5-f06c-4d6c-9cf1-3256fd6ff37d",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2TIL3MYULkEvveGs",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "106470202191109",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "file:data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "published",
+                "value": "false"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        720,
+        16
+      ],
+      "id": "ee463afb-5e62-48aa-8b7c-d82d4f819a2a",
+      "name": "Facebook Graph API",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "={{ $json['link hình ảnh'] }}",
+            "mode": "url"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -176,
+        -48
+      ],
+      "id": "5c2601cb-ece3-47f6-88f9-8eed96b93c5c",
+      "name": "Lấy hình ảnh trong drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2TIL3MYULkEvveGs",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lấy toàn bộ item từ node trước\nconst items = $input.all();\n\n// Sắp xếp theo tên file (name), dạng tự nhiên (1.png < 2.png < 10.png)\nitems.sort((a, b) => {\n  const nameA = a.json.name.toLowerCase();\n  const nameB = b.json.name.toLowerCase();\n  return nameA.localeCompare(nameB, undefined, { numeric: true });\n});\n\n// Trả từng item ra lại (vì n8n expects array of items)\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        -48
+      ],
+      "id": "974d1269-08b2-4d7e-a398-ffc7887f6b9f",
+      "name": "Sắp xếp thứ tự hình ảnh "
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        272,
+        -48
+      ],
+      "id": "46e3033f-461a-4798-8112-a36ef48e1638",
+      "name": "Loop Qua List"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27f49dce-bd7a-4e10-beb6-2fd215084f92",
+              "name": "media_fbid",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        496,
+        -240
+      ],
+      "id": "e6403c0a-fc16-4bec-bc11-f0b9a7d1b6ab",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $('Đăng Face test giờ cố định trong sheet').item.json['Nội dung bài đăng'] }}"
+              },
+              {
+                "name": "attached_media",
+                "value": "={{ $json.attached_media }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        944,
+        -240
+      ],
+      "id": "57e0b311-9d53-405c-a4c4-596c017e9c9c",
+      "name": "đăng bài",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk",
+          "mode": "list",
+          "cachedResultName": "N8N automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Đăng Face",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Đăng Face test giờ cố định trong sheet').item.json.row_number }}",
+            "Link bài post": "=fb.com/{{ $json.id }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Ngày ",
+              "displayName": "Ngày ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Giờ",
+              "displayName": "Giờ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nội dung bài đăng",
+              "displayName": "Nội dung bài đăng",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link hình ảnh",
+              "displayName": "link hình ảnh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link bài post",
+              "displayName": "Link bài post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1168,
+        -240
+      ],
+      "id": "17dd8b05-1c9d-4c1d-baf5-8381d58e2f3b",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "xmEqFQjHGIHhl3CL",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -656,
+        -704
+      ],
+      "id": "294f5f7f-756f-4baa-8e69-2bbe73b82747",
+      "name": "Đăng facebook với nhiều hình và nội dung"
+    },
+    {
+      "parameters": {
+        "content": "Đăng face:\nlink sheet: https://docs.google.com/spreadsheets/d/1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk/edit?gid=0#gid=0\ntạo folder để sẵn trong drive: với tên hình vd: 1.jpg, 2.jpg theo thứ tự hình muốn đăng",
+        "height": 208,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -880,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "b3062060-3fb1-4da0-a901-6afb0128e3df",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -624,
+        -176
+      ],
+      "id": "7aa9e3d1-fa9f-461c-ace7-0191853f5f84",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk",
+          "mode": "list",
+          "cachedResultName": "N8N automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Đăng Face",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Ngày ",
+              "lookupValue": "={{ $today.format('dd/LL/yyyy') }}"
+            },
+            {
+              "lookupColumn": "Giờ",
+              "lookupValue": "={{ new Date().toLocaleTimeString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit' }) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -400,
+        -176
+      ],
+      "id": "d0781469-70ba-493e-a7de-7883aaa64125",
+      "name": "Đăng Face",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "xmEqFQjHGIHhl3CL",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk",
+          "mode": "list",
+          "cachedResultName": "N8N automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Đăng Face",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Ngày ",
+              "lookupValue": "=01/01/2026"
+            },
+            {
+              "lookupColumn": "Giờ",
+              "lookupValue": "16:30"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -400,
+        16
+      ],
+      "id": "3bc20bdf-1b9b-43ce-a20c-9af02f05c198",
+      "name": "Đăng Face test giờ cố định trong sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "xmEqFQjHGIHhl3CL",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://shop.thetaphoa.store/api/facebook-posts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $('Lấy data bài ').item.json.data[0]._id }}"
+            },
+            {
+              "name": "status",
+              "value": "published"
+            },
+            {
+              "name": "postUrl",
+              "value": "=facebook.com/{{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1136,
+        -848
+      ],
+      "id": "f88cc8f4-ce36-4385-8ec7-cca71ed10e53",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "url": "https://shop.thetaphoa.store/api/facebook-posts",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -432,
+        -704
+      ],
+      "id": "064cb3cd-0cca-453f-811a-b8f48c1d07ed",
+      "name": "Lấy data bài "
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data[0].mediaFiles",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -704
+      ],
+      "id": "25e16339-d9e5-4a74-8a7b-fcee1875aa10",
+      "name": "chia ra thành nhiều hình"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        240,
+        -704
+      ],
+      "id": "52f1bf89-7918-4ee2-9a9b-13c0e47953dd",
+      "name": "Loop Qua List2"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "106470202191109",
+        "edge": "photos",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "published",
+                "value": "false"
+              },
+              {
+                "name": "url",
+                "value": "={{ $json.url }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        464,
+        -656
+      ],
+      "id": "de10132d-989e-4c9f-8637-58b135c69c4d",
+      "name": "Facebook Graph API2",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27f49dce-bd7a-4e10-beb6-2fd215084f92",
+              "name": "media_fbid",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        -848
+      ],
+      "id": "29ea3fab-cc3d-4cbe-bfeb-bac79bf58327",
+      "name": "Sửa data cho giống facebook rule (media_fbid)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "cf6899b3-d8a9-475a-b87a-20905d6c2f12",
+              "leftValue": "={{ $json.data[0].scheduledDate }}",
+              "rightValue": "={{ $today.format('dd/LL/yyyy') }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "1cc665cd-bfa8-43a3-ac86-a5f604f77783",
+              "leftValue": "={{ $json.data[0].scheduledTime }}",
+              "rightValue": "={{ new Date().toLocaleTimeString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit' }) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        -208,
+        -704
+      ],
+      "id": "8410a0d3-2829-49fc-bf25-80af6dfb134d",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $('Lấy data bài ').item.json.data[0].content }}"
+              },
+              {
+                "name": "attached_media",
+                "value": "={{ $json.attached_media }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        912,
+        -848
+      ],
+      "id": "b9e0a508-9ec9-4c5e-a0fd-525fd79f3b4d",
+      "name": "Post",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "attached_media",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        720,
+        -240
+      ],
+      "id": "0769bbeb-b61c-452c-987a-72aa26a63cb4",
+      "name": "Gom hình lại thành 1 field3"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "attached_media",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        688,
+        -848
+      ],
+      "id": "ab74a09e-9f84-4ad8-9c62-d507cf0f3c59",
+      "name": "Gom hình lại thành 1 field"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.thetaphoa.store",
+            "user-agent": "Java/1.8.0_192",
+            "content-length": "285",
+            "accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "118.102.2.29",
+            "cf-ipcountry": "VN",
+            "cf-ray": "9b7049a33e818b6b-HKG",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-warp-tag-id": "6d0ebaa8-e2e8-4d1d-94aa-0e2d651f0d45",
+            "connection": "keep-alive",
+            "content-type": "application/json",
+            "x-bot-api-secret-token": "secret_token_khuong-zalo",
+            "x-forwarded-for": "118.102.2.29",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_name": "message.text.received",
+            "message": {
+              "date": 1767252377933,
+              "chat": {
+                "chat_type": "PRIVATE",
+                "id": "b17f2bc7c6842fda7695"
+              },
+              "message_id": "23dcd05afd1eac46f509",
+              "from": {
+                "id": "b17f2bc7c6842fda7695",
+                "is_bot": false,
+                "display_name": "Khương"
+              },
+              "text": "bạn đang dùng model ai nào"
+            }
+          },
+          "webhookUrl": "https://n8n.thetaphoa.store/webhook/fda05ec8-3628-42ae-bf85-e21933209a62",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
   "connections": {
     "Webhook": {
       "main": [
         [
           {
-            "node": "AI local ubbutu",
+            "node": "typing zalo ",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "OpenAI Chat Model": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Trả lời bằng text zalo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Local LLM Ubuntu": {
       "ai_languageModel": [
         [
           {
-            "node": "AI local ubbutu",
+            "node": "AI Agent",
             "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "AI local ubbutu": {
+    "Download file": {
       "main": [
         [
           {
-            "node": "Trả lời bằng text",
+            "node": "Facebook Graph API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Graph API": {
+      "main": [
+        [
+          {
+            "node": "Loop Qua List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy hình ảnh trong drive": {
+      "main": [
+        [
+          {
+            "node": "Sắp xếp thứ tự hình ảnh ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sắp xếp thứ tự hình ảnh ": {
+      "main": [
+        [
+          {
+            "node": "Loop Qua List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Qua List": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Gom hình lại thành 1 field3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "đăng bài": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Đăng facebook với nhiều hình và nội dung": {
+      "main": [
+        [
+          {
+            "node": "Lấy data bài ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Đăng Face",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Đăng Face": {
+      "main": [
+        [
+          {
+            "node": "Lấy hình ảnh trong drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Đăng Face test giờ cố định trong sheet": {
+      "main": [
+        [
+          {
+            "node": "Lấy hình ảnh trong drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy data bài ": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "chia ra thành nhiều hình": {
+      "main": [
+        [
+          {
+            "node": "Loop Qua List2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Qua List2": {
+      "main": [
+        [
+          {
+            "node": "Sửa data cho giống facebook rule (media_fbid)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Facebook Graph API2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook Graph API2": {
+      "main": [
+        [
+          {
+            "node": "Loop Qua List2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sửa data cho giống facebook rule (media_fbid)": {
+      "main": [
+        [
+          {
+            "node": "Gom hình lại thành 1 field",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "chia ra thành nhiều hình",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gom hình lại thành 1 field3": {
+      "main": [
+        [
+          {
+            "node": "đăng bài",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gom hình lại thành 1 field": {
+      "main": [
+        [
+          {
+            "node": "Post",
             "type": "main",
             "index": 0
           }
@@ -205,7 +1233,7 @@
     "availableInMCP": false,
     "timeSavedPerExecution": 1
   },
-  "versionId": "0fca8339-4938-401d-ae28-992b4f1b56ee",
+  "versionId": "0b658c45-6e3a-4ccd-8449-784fab8e7d1c",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "86069d55abeb184a8e9081c44449d343940385668d1850b3b28e6671ebbcde44"
