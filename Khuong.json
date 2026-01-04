@@ -1,5 +1,5 @@
 {
-  "name": "Khuong",
+  "name": "Khuong BACKUP",
   "nodes": [
     {
       "parameters": {
@@ -10,8 +10,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -2352,
-        -16
+        -608,
+        448
       ],
       "id": "8a2568ca-3325-4922-8a2c-d38e6d01ddde",
       "name": "Webhook",
@@ -44,8 +44,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -1808,
-        112
+        -64,
+        576
       ],
       "id": "001a06d9-17e7-4c8a-ac0b-b695d8d50a64",
       "name": "Trả lời bằng photo trên zalo"
@@ -72,8 +72,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -1648,
-        -96
+        96,
+        368
       ],
       "id": "e346270b-6810-4efb-9a01-202da73e3cab",
       "name": "Trả lời bằng text zalo"
@@ -100,8 +100,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -2352,
-        128
+        -608,
+        592
       ],
       "id": "605afa03-a8cc-4b66-9dd6-3529ee324605",
       "name": "verify zalo bot"
@@ -128,8 +128,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -2064,
-        -160
+        -320,
+        304
       ],
       "id": "afb58d6f-ba66-4c8f-bb2c-86cf46256ee6",
       "name": "typing zalo "
@@ -143,8 +143,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -2080,
-        0
+        -336,
+        464
       ],
       "id": "549dd35b-3ff4-4493-bd29-2deee8404a1a",
       "name": "AI Agent"
@@ -157,8 +157,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        -2032,
-        192
+        -288,
+        656
       ],
       "id": "abb5ceb9-5bd5-4a1a-82f7-02ab35fee086",
       "name": "Google Gemini Chat Model",
@@ -184,8 +184,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -2160,
-        176
+        -416,
+        640
       ],
       "id": "623c5c6c-2718-49ba-85f9-e775b1de5a8a",
       "name": "AI Local LLM Ubuntu",
@@ -222,8 +222,8 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.4,
       "position": [
-        -976,
-        -1184
+        -1520,
+        -832
       ],
       "id": "c64950a1-47ba-4553-a5c2-10081498417c",
       "name": "On form submission",
@@ -515,26 +515,15 @@
       }
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -656,
-        -704
-      ],
-      "id": "294f5f7f-756f-4baa-8e69-2bbe73b82747",
-      "name": "Đăng facebook với nhiều hình và nội dung"
-    },
-    {
       "parameters": {
-        "content": "Đăng face:\nlink sheet: https://docs.google.com/spreadsheets/d/1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk/edit?gid=0#gid=0\ntạo folder để sẵn trong drive: với tên hình vd: 1.jpg, 2.jpg theo thứ tự hình muốn đăng",
-        "height": 208,
-        "width": 224
+        "content": "Đăng face bằng gg sheet:\nlink sheet: https://docs.google.com/spreadsheets/d/1vxwDdaEgKE0unfPdZPPsAgrNi2x-eTdYDWB9zJyzdCk/edit?gid=0#gid=0\ntạo folder để sẵn trong drive: với tên hình vd: 1.jpg, 2.jpg theo thứ tự hình muốn đăng",
+        "height": 560,
+        "width": 2256
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         -880,
-        -224
+        -320
       ],
       "typeVersion": 1,
       "id": "b3062060-3fb1-4da0-a901-6afb0128e3df",
@@ -554,7 +543,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -624,
+        -592,
         -176
       ],
       "id": "7aa9e3d1-fa9f-461c-ace7-0191853f5f84",
@@ -652,35 +641,59 @@
     },
     {
       "parameters": {
-        "method": "PUT",
-        "url": "https://shop.thetaphoa.store/api/facebook-posts",
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "id",
-              "value": "={{ $('Lấy data bài ').item.json.data[0]._id }}"
-            },
-            {
-              "name": "status",
-              "value": "published"
-            },
-            {
-              "name": "postUrl",
-              "value": "=facebook.com/{{ $json.id }}"
-            }
-          ]
-        },
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "attached_media",
         "options": {}
       },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
       "position": [
-        1136,
-        -848
+        720,
+        -240
       ],
-      "id": "f88cc8f4-ce36-4385-8ec7-cca71ed10e53",
-      "name": "HTTP Request1"
+      "id": "0769bbeb-b61c-452c-987a-72aa26a63cb4",
+      "name": "Gom hình lại thành 1 field3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1456,
+        -288
+      ],
+      "id": "294f5f7f-756f-4baa-8e69-2bbe73b82747",
+      "name": "Click"
+    },
+    {
+      "parameters": {
+        "content": "Zalo bot bằng AI",
+        "height": 528,
+        "width": 1248
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -880,
+        288
+      ],
+      "typeVersion": 1,
+      "id": "c078e020-865c-4c8a-a1f6-36145ab34f75",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Đăng face bằng shop app:",
+        "height": 1024,
+        "width": 3664
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -880,
+        -1392
+      ],
+      "typeVersion": 1,
+      "id": "76a12385-60a3-4907-85e9-f12601ae8f0c",
+      "name": "Sticky Note2"
     },
     {
       "parameters": {
@@ -690,24 +703,24 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -432,
-        -704
+        -496,
+        -960
       ],
-      "id": "064cb3cd-0cca-453f-811a-b8f48c1d07ed",
+      "id": "fcad9745-fe94-4d13-8172-78fd3e74637e",
       "name": "Lấy data bài "
     },
     {
       "parameters": {
-        "fieldToSplitOut": "data[0].mediaFiles",
+        "fieldToSplitOut": "mediaFiles",
         "options": {}
       },
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        16,
-        -704
+        176,
+        -1184
       ],
-      "id": "25e16339-d9e5-4a74-8a7b-fcee1875aa10",
+      "id": "a35bf1c2-a051-497f-9743-e9442d4b468d",
       "name": "chia ra thành nhiều hình"
     },
     {
@@ -717,11 +730,629 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        240,
-        -704
+        400,
+        -1184
       ],
-      "id": "52f1bf89-7918-4ee2-9a9b-13c0e47953dd",
+      "id": "beffceb7-ffd3-4ec8-9044-f2b16d2c89a2",
       "name": "Loop Qua List2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27f49dce-bd7a-4e10-beb6-2fd215084f92",
+              "name": "media_fbid",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        -1328
+      ],
+      "id": "47c1d27f-208d-48ca-b601-d8f23436e41e",
+      "name": "Sửa data cho giống facebook rule (media_fbid)"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "feed",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "message",
+                "value": "={{ $('Code in JavaScript2').item.json.content }}"
+              },
+              {
+                "name": "attached_media",
+                "value": "={{ $json.attached_media }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        -1328
+      ],
+      "id": "5fbf7686-1b2d-4cd6-b440-9d87705713c5",
+      "name": "Post",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "attached_media",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -1328
+      ],
+      "id": "42a5d6bb-3815-4742-991e-10d70880d98d",
+      "name": "Gom hình lại thành 1 field"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f1eac148-d478-4db9-b7ec-5f35d2cb9196",
+              "leftValue": "={{ $json.status.publishing_phase.publish_status }}",
+              "rightValue": "published",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2192,
+        -816
+      ],
+      "id": "fab4183c-e52a-49a3-9d89-ff2c820572e1",
+      "name": "Check nếu chưa up thì đợi lấy status lại"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.postType }}",
+                    "rightValue": "post",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "158fe265-faf0-4df3-88e0-ca86f28191b4"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "cd320540-12ed-42f9-be8e-221896c563c1",
+                    "leftValue": "={{ $json.postType }}",
+                    "rightValue": "reel-video",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c27546b5-3864-4261-b31b-6e4811df7be6",
+                    "leftValue": "={{ $json.postType }}",
+                    "rightValue": "reel-link",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        -976
+      ],
+      "id": "b012c213-0cf3-431d-86a8-86059f2cf3a8",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.mediaFiles[0].url }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/91.0.4472.124"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "bbc6f123-fbbc-45cd-8676-09ed54483834",
+      "name": "Get TikTok Video Page Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        176,
+        -640
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.first().json.data;\nconst headers = $input.first().json.headers || {};\nconst cookies = headers['set-cookie'] || [];\n\nif (!html) {\n  throw new Error(\"HTML body is undefined. Check the previous node's output.\");\n}\nconst regex = /<script id=\"__UNIVERSAL_DATA_FOR_REHYDRATION__\" type=\"application\\/json\">([\\s\\S]*?)<\\/script>/;\nconst match = html.match(regex);\n\nif (match) {\n  const jsonStr = match[1];\n  const data = JSON.parse(jsonStr);\n  const videoUrl = data?.__DEFAULT_SCOPE__?.[\"webapp.video-detail\"]?.itemInfo?.itemStruct?.video?.playAddr;\n  if (!videoUrl) {\n    throw new Error(\"Could not find video URL in the JSON data.\");\n  }\n  return [{ json: { videoUrl, cookies: cookies.join('; ') } }];\n} else {\n  throw new Error(\"Could not find __UNIVERSAL_DATA_FOR_REHYDRATION__ script in the HTML.\");\n}"
+      },
+      "id": "68669f9c-1d48-48a4-8122-86feb3025d4d",
+      "name": "Scrape raw video URL",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        400,
+        -640
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.videoUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "https://www.tiktok.com/"
+            },
+            {
+              "name": "Accept",
+              "value": "video/mp4,video/webm,video/*;q=0.9,application/octet-stream;q=0.8"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "en-US,en;q=0.5"
+            },
+            {
+              "name": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "name": "Cookie",
+              "value": "={{ $json.cookies }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "c04d9b23-3064-4dc8-9c10-dc41ef710a94",
+      "name": "Output video file without watermark",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        624,
+        -640
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.upload_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "offset",
+              "value": "0"
+            },
+            {
+              "name": "file_size",
+              "value": "={{ $json.bufferSize }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "=binaryData",
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1296,
+        -672
+      ],
+      "id": "688905d7-97e5-4f10-9cb9-b696215687b8",
+      "name": "HTTP Request",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1072,
+        -688
+      ],
+      "id": "78d0edc5-90b8-4527-a31e-4e4da0c966b4",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "video_reels",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "video_id",
+                "value": "={{ $('Merge').item.json.video_id }}"
+              },
+              {
+                "name": "upload_phase",
+                "value": "finish"
+              },
+              {
+                "name": "video_state",
+                "value": "PUBLISHED"
+              },
+              {
+                "name": "description",
+                "value": "={{ $('Code in JavaScript2').item.json.content }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        -672
+      ],
+      "id": "c818b233-15c1-43c1-bded-2dce30eb142c",
+      "name": "Publish reel1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const buffer = await this.helpers.getBinaryDataBuffer(0, 'data');\n\nreturn {\n  bufferSize: buffer.length\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        -528
+      ],
+      "id": "eb87a348-c389-48f5-b6b8-23363e2bf906",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -720,
+        -960
+      ],
+      "id": "48102ddc-723d-42d2-8140-6a881e4f4f29",
+      "name": "Schedule Trigger2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $('Lấy data bài ').first().json.data;\n\n// Lấy ngày giờ hiện tại\nconst now = new Date();\n\nconst vnTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' }));\n\n// Format ngày theo DD/MM/YYYY\nconst currentDate = vnTime.toLocaleDateString('en-GB'); // \"03/01/2026\"\n// Format giờ theo HH:mm\nconst hours = String(vnTime.getHours()).padStart(2, '0');\nconst minutes = String(vnTime.getMinutes()).padStart(2, '0');\nconst currentTime = `${hours}:${minutes}`; // \"09:06\"\n\nconst filtered = items.filter(item => {\n\n  // So sánh trực tiếp chuỗi\n  const matchDate = item.scheduledDate === currentDate;\n  const matchTime = item.scheduledTime === currentTime;\n  const notPublished = item.status !== 'published';  \n\n  \n  return matchDate && matchTime && notPublished;\n});\n\nreturn filtered.map(post => ({ json: post }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -272,
+        -960
+      ],
+      "id": "fdb8332d-83e3-4654-a64b-268e8f647bd1",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.upload_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "facebookGraphApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "file_url",
+              "value": "={{ $('Code in JavaScript2').item.json.mediaFiles[0].url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1296,
+        -960
+      ],
+      "id": "b18ee74e-daef-485d-ba75-d63d61d041c6",
+      "name": "Rupload Video 1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "video_reels",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "video_id",
+                "value": "={{ $('Upload session bằng video upload').item.json.video_id }}"
+              },
+              {
+                "name": "upload_phase",
+                "value": "finish"
+              },
+              {
+                "name": "video_state",
+                "value": "PUBLISHED"
+              },
+              {
+                "name": "description",
+                "value": "={{ $('Code in JavaScript2').item.json.content }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        -960
+      ],
+      "id": "037bfeff-ffc8-4498-8e9d-9791b36ff738",
+      "name": "Publish reel2",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1744,
+        -816
+      ],
+      "id": "7ddeb058-d52e-49f5-8173-ae5c39a0e07a",
+      "name": "Đợi status thành công1",
+      "webhookId": "123f88d6-5c69-4b7f-89eb-a0b810f92c2e"
+    },
+    {
+      "parameters": {
+        "graphApiVersion": "v23.0",
+        "node": "={{ $('Merge').item.json.video_id }}",
+        "edge": "=",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "fields",
+                "value": "status"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -896
+      ],
+      "id": "b1e4c77c-777e-498e-84d0-855f269cfe1e",
+      "name": "Lấy status1",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "video_reels",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "upload_phase",
+                "value": "start"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        -960
+      ],
+      "id": "8d54cae3-57d3-4c91-9357-00b04fac87aa",
+      "name": "Upload session bằng video upload",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "edge": "video_reels",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "upload_phase",
+                "value": "start"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -816
+      ],
+      "id": "1e60292d-50b2-4950-97f7-5f83868137c4",
+      "name": "Upload session bằng link tiktok",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "83A7rw2cSHq2OCfd",
+          "name": "Facebook Graph account"
+        }
+      }
     },
     {
       "parameters": {
@@ -747,11 +1378,11 @@
       "type": "n8n-nodes-base.facebookGraphApi",
       "typeVersion": 1,
       "position": [
-        464,
-        -656
+        624,
+        -1136
       ],
-      "id": "de10132d-989e-4c9f-8637-58b135c69c4d",
-      "name": "Facebook Graph API2",
+      "id": "60c3e08a-7976-4cd9-b893-3ebb4dad4eb2",
+      "name": "Upload hình",
       "credentials": {
         "facebookGraphApi": {
           "id": "83A7rw2cSHq2OCfd",
@@ -761,134 +1392,67 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
+        "method": "PUT",
+        "url": "https://shop.thetaphoa.store/api/facebook-posts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
             {
-              "id": "27f49dce-bd7a-4e10-beb6-2fd215084f92",
-              "name": "media_fbid",
-              "value": "={{ $json.id }}",
-              "type": "string"
+              "name": "id",
+              "value": "={{ $('Code in JavaScript2').item.json._id }}"
+            },
+            {
+              "name": "status",
+              "value": "published"
+            },
+            {
+              "name": "postUrl",
+              "value": "=facebook.com/{{ $json.id }}"
             }
           ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
       "position": [
-        464,
-        -848
+        1296,
+        -1328
       ],
-      "id": "29ea3fab-cc3d-4cbe-bfeb-bac79bf58327",
-      "name": "Sửa data cho giống facebook rule (media_fbid)"
+      "id": "9fa2d390-e980-410a-8dac-8791715b4e9e",
+      "name": "Cập nhật vô database post"
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
+        "method": "PUT",
+        "url": "https://shop.thetaphoa.store/api/facebook-posts",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
             {
-              "id": "cf6899b3-d8a9-475a-b87a-20905d6c2f12",
-              "leftValue": "={{ $json.data[0].scheduledDate }}",
-              "rightValue": "={{ $today.format('dd/LL/yyyy') }}",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
+              "name": "id",
+              "value": "={{ $('Code in JavaScript2').item.json._id }}"
             },
             {
-              "id": "1cc665cd-bfa8-43a3-ac86-a5f604f77783",
-              "leftValue": "={{ $json.data[0].scheduledTime }}",
-              "rightValue": "={{ new Date().toLocaleTimeString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit' }) }}",
-              "operator": {
-                "type": "dateTime",
-                "operation": "equals"
-              }
+              "name": "status",
+              "value": "published"
+            },
+            {
+              "name": "postUrl",
+              "value": "=facebook.com/{{ $json.id }}"
             }
-          ],
-          "combinator": "and"
+          ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.3,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
       "position": [
-        -208,
-        -704
+        2416,
+        -816
       ],
-      "id": "8410a0d3-2829-49fc-bf25-80af6dfb134d",
-      "name": "Filter"
-    },
-    {
-      "parameters": {
-        "httpRequestMethod": "POST",
-        "graphApiVersion": "v23.0",
-        "node": "me",
-        "edge": "feed",
-        "options": {
-          "queryParameters": {
-            "parameter": [
-              {
-                "name": "message",
-                "value": "={{ $('Lấy data bài ').item.json.data[0].content }}"
-              },
-              {
-                "name": "attached_media",
-                "value": "={{ $json.attached_media }}"
-              }
-            ]
-          }
-        }
-      },
-      "type": "n8n-nodes-base.facebookGraphApi",
-      "typeVersion": 1,
-      "position": [
-        912,
-        -848
-      ],
-      "id": "b9e0a508-9ec9-4c5e-a0fd-525fd79f3b4d",
-      "name": "Post",
-      "credentials": {
-        "facebookGraphApi": {
-          "id": "83A7rw2cSHq2OCfd",
-          "name": "Facebook Graph account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "destinationFieldName": "attached_media",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        720,
-        -240
-      ],
-      "id": "0769bbeb-b61c-452c-987a-72aa26a63cb4",
-      "name": "Gom hình lại thành 1 field3"
-    },
-    {
-      "parameters": {
-        "aggregate": "aggregateAllItemData",
-        "destinationFieldName": "attached_media",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        688,
-        -848
-      ],
-      "id": "ab74a09e-9f84-4ad8-9c62-d507cf0f3c59",
-      "name": "Gom hình lại thành 1 field"
+      "id": "6f8fe6bf-b331-46d7-8f0b-24c0d040aad7",
+      "name": "Cập nhật vô database reel"
     }
   ],
   "pinData": {
@@ -1074,17 +1638,6 @@
         []
       ]
     },
-    "Đăng facebook với nhiều hình và nội dung": {
-      "main": [
-        [
-          {
-            "node": "Lấy data bài ",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Schedule Trigger": {
       "main": [
         [
@@ -1118,11 +1671,38 @@
         ]
       ]
     },
+    "Gom hình lại thành 1 field3": {
+      "main": [
+        [
+          {
+            "node": "đăng bài",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Click": {
+      "main": [
+        []
+      ]
+    },
+    "verify zalo bot": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Lấy data bài ": {
       "main": [
         [
           {
-            "node": "Filter",
+            "node": "Code in JavaScript2",
             "type": "main",
             "index": 0
           }
@@ -1151,18 +1731,7 @@
         ],
         [
           {
-            "node": "Facebook Graph API2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Facebook Graph API2": {
-      "main": [
-        [
-          {
-            "node": "Loop Qua List2",
+            "node": "Upload hình",
             "type": "main",
             "index": 0
           }
@@ -1180,33 +1749,11 @@
         ]
       ]
     },
-    "Filter": {
-      "main": [
-        [
-          {
-            "node": "chia ra thành nhiều hình",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Post": {
       "main": [
         [
           {
-            "node": "HTTP Request1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Gom hình lại thành 1 field3": {
-      "main": [
-        [
-          {
-            "node": "đăng bài",
+            "node": "Cập nhật vô database post",
             "type": "main",
             "index": 0
           }
@@ -1223,9 +1770,238 @@
           }
         ]
       ]
+    },
+    "Check nếu chưa up thì đợi lấy status lại": {
+      "main": [
+        [
+          {
+            "node": "Cập nhật vô database reel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Đợi status thành công1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "chia ra thành nhiều hình",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload session bằng video upload",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get TikTok Video Page Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get TikTok Video Page Data": {
+      "main": [
+        [
+          {
+            "node": "Scrape raw video URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape raw video URL": {
+      "main": [
+        [
+          {
+            "node": "Output video file without watermark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output video file without watermark": {
+      "main": [
+        [
+          {
+            "node": "Upload session bằng link tiktok",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Publish reel1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish reel1": {
+      "main": [
+        [
+          {
+            "node": "Đợi status thành công1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Lấy data bài ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rupload Video 1": {
+      "main": [
+        [
+          {
+            "node": "Publish reel2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish reel2": {
+      "main": [
+        [
+          {
+            "node": "Đợi status thành công1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Đợi status thành công1": {
+      "main": [
+        [
+          {
+            "node": "Lấy status1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy status1": {
+      "main": [
+        [
+          {
+            "node": "Check nếu chưa up thì đợi lấy status lại",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload session bằng video upload": {
+      "main": [
+        [
+          {
+            "node": "Rupload Video 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload session bằng link tiktok": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload hình": {
+      "main": [
+        [
+          {
+            "node": "Loop Qua List2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1",
     "timeSavedMode": "fixed",
@@ -1233,7 +2009,7 @@
     "availableInMCP": false,
     "timeSavedPerExecution": 1
   },
-  "versionId": "0b658c45-6e3a-4ccd-8449-784fab8e7d1c",
+  "versionId": "3d17c60a-9cab-421e-866e-62c7448582f3",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "86069d55abeb184a8e9081c44449d343940385668d1850b3b28e6671ebbcde44"
