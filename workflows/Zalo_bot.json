@@ -1,0 +1,257 @@
+{
+  "updatedAt": "2026-02-09T06:31:58.518Z",
+  "createdAt": "2026-01-02T09:52:15.053Z",
+  "id": "3ri0GedOwPLE5kIZ",
+  "name": "Zalo bot",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fda05ec8-3628-42ae-bf85-e21933209a62",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -128,
+        80
+      ],
+      "id": "9f1b235f-2ed4-4daf-b022-a71b13105771",
+      "name": "Webhook",
+      "webhookId": "fda05ec8-3628-42ae-bf85-e21933209a62",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/sendPhoto",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=chat_id",
+              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
+            },
+            {
+              "name": "caption",
+              "value": "My photo"
+            },
+            {
+              "name": "photo",
+              "value": "https://placehold.co/600x400"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        592,
+        304
+      ],
+      "id": "9d6d8f1a-3ffe-4aea-a88f-d771f0fbe6cf",
+      "name": "Trả lời bằng photo trên zalo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
+            },
+            {
+              "name": "=text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        640,
+        48
+      ],
+      "id": "88093e88-3bfb-4612-89c5-caf208e8eb32",
+      "name": "Trả lời bằng text zalo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/setWebhook",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://n8n.thetaphoa.store/webhook/fda05ec8-3628-42ae-bf85-e21933209a62"
+            },
+            {
+              "name": "secret_token",
+              "value": "secret_token_khuong-zalo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -192,
+        272
+      ],
+      "id": "198c37fa-b1d9-4e53-87b0-66d28dc80434",
+      "name": "verify zalo bot"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT /setWebhook",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://your-webhookurl.com"
+            },
+            {
+              "name": "secret_token",
+              "value": "mykey-abcyxz"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        272,
+        -16
+      ],
+      "id": "4af5b0d0-4cdf-46c1-bcc8-2c2d2436639e",
+      "name": "typing zalo "
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Trả lời câu nhắn tin của user nha: {{ $json.body.message.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        144
+      ],
+      "id": "7327d2d7-f149-40c9-88c4-168267605a94",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-opus-4-6-thinking",
+          "mode": "id"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        192,
+        352
+      ],
+      "id": "65af8903-f440-423b-9cf1-334d1c352369",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZQmj6pJ5Zy0uP5z1",
+          "name": "CLI-proxy"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "typing zalo ",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Trả lời bằng text zalo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "b1044ddc-d2d6-45c4-85c7-cd51dc66af1e",
+  "activeVersionId": "3ed2fa79-c2ae-435d-b6c6-eb50d46ba903",
+  "versionCounter": 38,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-01-02T09:52:15.057Z",
+      "createdAt": "2026-01-02T09:52:15.057Z",
+      "role": "workflow:owner",
+      "workflowId": "3ri0GedOwPLE5kIZ",
+      "projectId": "1uTvCtZTXcZZgYo6",
+      "project": {
+        "updatedAt": "2025-11-07T10:21:21.281Z",
+        "createdAt": "2025-11-07T10:17:33.127Z",
+        "id": "1uTvCtZTXcZZgYo6",
+        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
+      }
+    }
+  ]
+}

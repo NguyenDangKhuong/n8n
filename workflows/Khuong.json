@@ -1,5 +1,11 @@
 {
+  "updatedAt": "2026-02-09T06:23:08.128Z",
+  "createdAt": "2025-11-07T15:39:32.367Z",
+  "id": "UXAMvl3U33MpX0tK",
   "name": "Khuong",
+  "description": null,
+  "active": false,
+  "isArchived": false,
   "nodes": [
     {
       "parameters": {
@@ -197,37 +203,6 @@
           "name": "AI studio local ubuntu"
         }
       }
-    },
-    {
-      "parameters": {
-        "formTitle": "Upload reel facebook",
-        "formFields": {
-          "values": [
-            {
-              "fieldName": "Video",
-              "fieldLabel": "Đăng video",
-              "fieldType": "file",
-              "multipleFiles": false,
-              "requiredField": true
-            },
-            {
-              "fieldName": "Title",
-              "fieldLabel": "Title",
-              "placeholder": "nhập mô tả video"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.formTrigger",
-      "typeVersion": 2.4,
-      "position": [
-        -1520,
-        -832
-      ],
-      "id": "c64950a1-47ba-4553-a5c2-10081498417c",
-      "name": "On form submission",
-      "webhookId": "9bf3d816-8a79-4dc2-a08c-d4a43f186f45"
     },
     {
       "parameters": {
@@ -659,8 +634,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -1456,
-        -288
+        -1184,
+        32
       ],
       "id": "294f5f7f-756f-4baa-8e69-2bbe73b82747",
       "name": "Click"
@@ -1475,8 +1450,8 @@
       "type": "n8n-nodes-social-tiktok.tikTokUpload",
       "typeVersion": 1,
       "position": [
-        256,
-        1216
+        368,
+        1056
       ],
       "id": "353b9b79-c6d2-4cc8-9699-5caf01bdb34b",
       "name": "TikTok Upload File Path",
@@ -1494,8 +1469,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -416,
-        1216
+        -304,
+        1056
       ],
       "id": "9beb41c1-d907-4b8b-9a6a-f33667d22f57",
       "name": "Check thời gian"
@@ -1508,8 +1483,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -192,
-        1296
+        -80,
+        1136
       ],
       "id": "a02ed53a-a422-43bf-a509-4fa4755275b4",
       "name": "Lấy video"
@@ -1528,8 +1503,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -864,
-        1216
+        -752,
+        1056
       ],
       "id": "6c388ab1-4886-4ade-83a1-8e8988914aac",
       "name": "Schedule Trigger1"
@@ -1556,8 +1531,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        480,
-        1216
+        592,
+        1056
       ],
       "id": "59e36817-a7da-4e21-9913-e9504d522083",
       "name": "Cập nhật vô database"
@@ -1570,8 +1545,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -640,
-        1216
+        -528,
+        1056
       ],
       "id": "e04c0530-d0f8-4133-b758-c1de28c6f810",
       "name": "Lấy data bài 1"
@@ -1581,8 +1556,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        32,
-        1216
+        144,
+        1056
       ],
       "id": "cead2a47-706a-46e4-b170-0f64738c5ea2",
       "name": "Merge1"
@@ -1595,10 +1570,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -912,
-        2224
+        -192,
+        2144
       ],
-      "id": "d3fa99c7-cadf-4fa6-9825-6507d7c84eed",
+      "id": "a0cbc700-f192-4a26-a18a-19b42827be82",
       "name": "get token veo3"
     },
     {
@@ -1628,10 +1603,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        432,
-        1696
+        1376,
+        1760
       ],
-      "id": "6c0ab946-33b5-4196-819a-4fab999cbd74",
+      "id": "2e4cbef0-a256-46a9-9ddc-33d169d48448",
       "name": "check status"
     },
     {
@@ -1662,10 +1637,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        656,
-        1680
+        1600,
+        1712
       ],
-      "id": "76ffbbc6-e82b-4804-8c30-0d4e5d6bc0d8",
+      "id": "001d71ae-f2ae-4c1e-9ded-7a5ac0206993",
       "name": "kiểm tra tên"
     },
     {
@@ -1696,10 +1671,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1104,
-        1600
+        2048,
+        1632
       ],
-      "id": "1a760480-afd2-440e-bbb5-88c5c814b798",
+      "id": "b972b9a8-0b15-4a67-bf16-5b4da6870c72",
       "name": "kiểm tra xem có file url"
     },
     {
@@ -1707,10 +1682,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        656,
-        1872
+        1600,
+        1920
       ],
-      "id": "87e47bd4-35d7-44fe-b0b4-bc0c2021e022",
+      "id": "f5a181c2-ddf8-4f1d-b08d-492c01700c87",
       "name": "Wait2",
       "webhookId": "3e865c03-099f-4d24-b3c3-4f9ec9e52b2f"
     },
@@ -1719,10 +1694,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1328,
-        1680
+        2272,
+        1712
       ],
-      "id": "9de70120-331e-4bfb-8403-bc89f2902648",
+      "id": "ad132903-b9dd-47cf-8010-d48fa79d5d30",
       "name": "Wait3",
       "webhookId": "a94b0bf9-3d35-436d-b91f-14cb5fa3fa70"
     },
@@ -1734,10 +1709,10 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -464,
-        2112
+        480,
+        2144
       ],
-      "id": "b1807eaa-c437-426f-ba4f-959d2b2680b4",
+      "id": "c236a77f-5721-42b3-81c3-1828d929c6ae",
       "name": "Split Out1"
     },
     {
@@ -1747,10 +1722,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -240,
-        2112
+        704,
+        2144
       ],
-      "id": "de97f1fa-64af-4e63-9d4e-c648dd59d559",
+      "id": "eabc1883-a0dc-4f78-b9b2-a97a9412a6a6",
       "name": "Loop Over Items"
     },
     {
@@ -1762,23 +1737,23 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1.1,
       "position": [
-        -16,
-        2112
+        928,
+        2144
       ],
-      "id": "48cb4dae-46ed-424e-86cd-896cf647d336",
+      "id": "2ec19a2d-1fa8-4391-b05d-e37985e91792",
       "name": "ghi mấy video vô folder tạm"
     },
     {
       "parameters": {
-        "command": "echo -e \"file '/files/temp_video_0.mp4'\\nfile '/files/temp_video_1.mp4'\" > /files/concat_list.txt && ffmpeg -y -f concat -safe 0 -i /files/concat_list.txt -c copy /files/merged_output.mp4"
+        "command": "ls -v /files/temp_video_*.mp4 | sed \"s|^|file '|;s|$|'|\" > /files/concat_list.txt && ffmpeg -y -f concat -safe 0 -i /files/concat_list.txt -c copy /files/merged_output.mp4"
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        208,
-        2112
+        1152,
+        2144
       ],
-      "id": "fc0f6c1b-1dfc-468a-b8e2-fdefe813fc8e",
+      "id": "3b02e345-2d13-4d3a-86c5-610f33661e74",
       "name": "merge video"
     },
     {
@@ -1791,10 +1766,10 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1.1,
       "position": [
-        432,
-        2112
+        1376,
+        2144
       ],
-      "id": "5123c923-30fd-402c-acc3-6c3fe4d63e21",
+      "id": "2258b2f1-d4ce-48a8-90af-a3195879d1a8",
       "name": "lấy video ra"
     },
     {
@@ -1804,10 +1779,10 @@
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        1104,
-        2112
+        1824,
+        2144
       ],
-      "id": "3ef89e11-3474-4db9-92f1-7773b56cb8d0",
+      "id": "be5192c6-900e-4981-a22e-e2f8834185cf",
       "name": "Xóa video sau đăng"
     },
     {
@@ -1818,10 +1793,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -688,
-        2224
+        32,
+        2144
       ],
-      "id": "9e3b1e7c-34c2-4773-8044-338b7128c44e",
+      "id": "2af3b638-e755-4a4a-ae6a-bedd262c341c",
       "name": "lấy data prompt"
     },
     {
@@ -1845,10 +1820,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -16,
-        1776
+        928,
+        1824
       ],
-      "id": "4a11f336-e061-4d9b-8428-1434884b9f7d",
+      "id": "63f55882-4b76-465f-b5ff-3c48a56feb60",
       "name": "Tạo video từ hình post"
     },
     {
@@ -1877,10 +1852,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        208,
-        1776
+        1152,
+        1824
       ],
-      "id": "ee75639b-877a-4155-9339-3914905596ac",
+      "id": "56b5579a-2c6b-42b2-9f72-80554cb3f732",
       "name": "Check status"
     },
     {
@@ -1972,10 +1947,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        880,
-        1680
+        1824,
+        1712
       ],
-      "id": "4f600a32-cc7a-4424-bc50-36922f6dec4e",
+      "id": "9669458f-998e-497b-9a42-b5c0d9f2fac7",
       "name": "Lấy video url"
     },
     {
@@ -1986,10 +1961,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1328,
-        2032
+        2272,
+        2192
       ],
-      "id": "b5a29084-e924-4824-8323-de1f5b4f7f36",
+      "id": "24125097-c997-40a0-bf81-80b16fa2d435",
       "name": "Get video"
     },
     {
@@ -2013,10 +1988,10 @@
       "type": "n8n-nodes-social-tiktok.tikTokUpload",
       "typeVersion": 1,
       "position": [
-        880,
-        2112
+        1600,
+        2144
       ],
-      "id": "589c4ff5-f71b-4607-9b6a-ed37ffb24835",
+      "id": "138e1a67-51d3-44a2-bdee-228cb9ecc0ff",
       "name": "TikTok Upload File",
       "credentials": {
         "tiktokApi": {
@@ -2026,67 +2001,87 @@
       }
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
+      "parameters": {
+        "jsCode": "const minutes = Math.floor(Math.random() * 25) + 1;\nreturn [{ json: { delayMinutes: minutes } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        656,
-        2112
+        -640,
+        2016
       ],
-      "id": "82838450-01c2-4ffa-b48e-0f79e6b6408c",
-      "name": "Gộp lấy data product và video"
+      "id": "9c9d233c-ca18-44ab-9c1e-c54da6bd97da",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.delayMinutes }}",
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -416,
+        2016
+      ],
+      "id": "731a0f6f-6d3d-448b-b386-f1ed097c099a",
+      "name": "Wait",
+      "webhookId": "0ccb5fbd-0fe9-4fcb-8ea0-04210f84fb59"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2b827f27-a1db-401d-a00a-3d62a1b071b5",
+              "leftValue": "={{ $json.data[0].enabled }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        256,
+        2144
+      ],
+      "id": "a8b0b2a1-4dbd-4978-b053-d686f3d419c0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -864,
+        2016
+      ],
+      "id": "d6de4cc3-4d98-40fe-a88a-ac3d2f143e38",
+      "name": "Schedule Trigger3"
     }
   ],
-  "pinData": {
-    "Webhook": [
-      {
-        "json": {
-          "headers": {
-            "host": "n8n.thetaphoa.store",
-            "user-agent": "Java/1.8.0_192",
-            "content-length": "285",
-            "accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
-            "accept-encoding": "gzip, br",
-            "cdn-loop": "cloudflare; loops=1",
-            "cf-connecting-ip": "118.102.2.29",
-            "cf-ipcountry": "VN",
-            "cf-ray": "9b7049a33e818b6b-HKG",
-            "cf-visitor": "{\"scheme\":\"https\"}",
-            "cf-warp-tag-id": "6d0ebaa8-e2e8-4d1d-94aa-0e2d651f0d45",
-            "connection": "keep-alive",
-            "content-type": "application/json",
-            "x-bot-api-secret-token": "secret_token_khuong-zalo",
-            "x-forwarded-for": "118.102.2.29",
-            "x-forwarded-proto": "https"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "event_name": "message.text.received",
-            "message": {
-              "date": 1767252377933,
-              "chat": {
-                "chat_type": "PRIVATE",
-                "id": "b17f2bc7c6842fda7695"
-              },
-              "message_id": "23dcd05afd1eac46f509",
-              "from": {
-                "id": "b17f2bc7c6842fda7695",
-                "is_bot": false,
-                "display_name": "Khương"
-              },
-              "text": "bạn đang dùng model ai nào"
-            }
-          },
-          "webhookUrl": "https://n8n.thetaphoa.store/webhook/fda05ec8-3628-42ae-bf85-e21933209a62",
-          "executionMode": "production"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ]
-  },
   "connections": {
     "Webhook": {
       "main": [
@@ -2788,7 +2783,7 @@
       "main": [
         [
           {
-            "node": "Gộp lấy data product và video",
+            "node": "TikTok Upload File",
             "type": "main",
             "index": 0
           }
@@ -2799,14 +2794,9 @@
       "main": [
         [
           {
-            "node": "Split Out1",
+            "node": "If",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "Gộp lấy data product và video",
-            "type": "main",
-            "index": 1
           }
         ]
       ]
@@ -2866,11 +2856,44 @@
         ]
       ]
     },
-    "Gộp lấy data product và video": {
+    "Code in JavaScript": {
       "main": [
         [
           {
-            "node": "TikTok Upload File",
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "get token veo3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
@@ -2878,7 +2901,6 @@
       ]
     }
   },
-  "active": false,
   "settings": {
     "executionOrder": "v1",
     "timeSavedMode": "fixed",
@@ -2886,11 +2908,86 @@
     "availableInMCP": false,
     "timeSavedPerExecution": 1
   },
-  "versionId": "a420a0a5-cb8f-4e6d-b2d4-8950e5a57347",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "86069d55abeb184a8e9081c44449d343940385668d1850b3b28e6671ebbcde44"
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
   },
-  "id": "UXAMvl3U33MpX0tK",
-  "tags": []
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.thetaphoa.store",
+            "user-agent": "Java/1.8.0_192",
+            "content-length": "285",
+            "accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+            "accept-encoding": "gzip, br",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "118.102.2.29",
+            "cf-ipcountry": "VN",
+            "cf-ray": "9b7049a33e818b6b-HKG",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-warp-tag-id": "6d0ebaa8-e2e8-4d1d-94aa-0e2d651f0d45",
+            "connection": "keep-alive",
+            "content-type": "application/json",
+            "x-bot-api-secret-token": "secret_token_khuong-zalo",
+            "x-forwarded-for": "118.102.2.29",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "event_name": "message.text.received",
+            "message": {
+              "date": 1767252377933,
+              "chat": {
+                "chat_type": "PRIVATE",
+                "id": "b17f2bc7c6842fda7695"
+              },
+              "message_id": "23dcd05afd1eac46f509",
+              "from": {
+                "id": "b17f2bc7c6842fda7695",
+                "is_bot": false,
+                "display_name": "Khương"
+              },
+              "text": "bạn đang dùng model ai nào"
+            }
+          },
+          "webhookUrl": "https://n8n.thetaphoa.store/webhook/fda05ec8-3628-42ae-bf85-e21933209a62",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "0b94cee9-66e0-4d40-b795-70823fc5be39",
+  "activeVersionId": null,
+  "versionCounter": 139,
+  "triggerCount": 3,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2025-11-07T15:39:32.371Z",
+      "createdAt": "2025-11-07T15:39:32.371Z",
+      "role": "workflow:owner",
+      "workflowId": "UXAMvl3U33MpX0tK",
+      "projectId": "1uTvCtZTXcZZgYo6",
+      "project": {
+        "updatedAt": "2025-11-07T10:21:21.281Z",
+        "createdAt": "2025-11-07T10:17:33.127Z",
+        "id": "1uTvCtZTXcZZgYo6",
+        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
+      }
+    }
+  ]
 }

@@ -1,0 +1,614 @@
+{
+  "updatedAt": "2026-01-01T08:32:04.324Z",
+  "createdAt": "2026-01-01T08:32:04.324Z",
+  "id": "i2f56st3S3Oy5Fww",
+  "name": "nanoai.pics pass captcha text to video 3.1 (update 26.12)",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1792,
+        256
+      ],
+      "id": "e976269b-991c-4797-a60f-dabe8e8836c7",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://new-rest.onewise.app/api/fix/create-video-veo3",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json['Token Apikey nanoai'] }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"body_json\": {\n    \"clientContext\": {\n      \"recaptchaToken\": \"\",\n      \"sessionId\": \";{{ new Date().getTime() }}\",\n      \"projectId\": \"{{ $json.projectId }}\",\n      \"tool\": \"PINHOLE\",\n      \"userPaygateTier\": \"PAYGATE_TIER_ONE\"\n    },\n    \"requests\": [\n      {\n        \"aspectRatio\": \"{{ $json.aspectRatio }}\",\n        \"seed\": 13924,\n        \"textInput\": {\n          \"prompt\": \"{{ $json.prompt }}\"\n        },\n        \"videoModelKey\": \"{{ $json.videoModelKey }}\",\n        \"metadata\": {\n          \"sceneId\": \"{{ 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {\nvar r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);\nreturn v.toString(16);\n}) }}\"\n        }\n      }\n    ]\n  },\n  \"flow_auth_token\": \"{{ $json.flow_auth_token }}\",\n  \"flow_url\": \"https://aisandbox-pa.googleapis.com/v1/video:batchAsyncGenerateVideoText\",\n  \"is_proxy\": false\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1264,
+        256
+      ],
+      "id": "774309aa-5d29-4129-b321-bef159b9e0b4",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "url": "https://new-rest.onewise.app/api/fix/task-status",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $('HTTP Request2').item.json.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Setup first').item.json['Token Apikey nanoai'] }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1056,
+        256
+      ],
+      "id": "c9c3ca5b-66e5-4b67-b992-742fcda035ef",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -448,
+        256
+      ],
+      "id": "e6672f52-2d07-4ff0-81ac-7825be554ae0",
+      "name": "Wait1",
+      "webhookId": "1487046c-4967-4d31-9692-a106cc5f0ecd"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cade58cf-3622-4bdd-a031-99c2f4eb84df",
+              "name": "remainingCredits",
+              "value": "={{ $json.remainingCredits }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        304
+      ],
+      "id": "e61966da-d7bf-491a-a889-19270a6b904e",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        240
+      ],
+      "id": "e8cc36fa-b7ff-48de-abe5-fbef7913441a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://aisandbox-pa.googleapis.com/v1/video:batchCheckAsyncVideoGenerationStatus",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Setup first').item.json.flow_auth_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"operations\": [\n{\n\"operation\": {\n\"name\": \"{{ $('HTTP Request3').item.json.result.operations[0].operation.name }}\"\n},\n\"sceneId\": \"{{ $('HTTP Request3').item.json.result.operations[0].sceneId }}\",\n\"status\": \"{{ $('HTTP Request3').item.json.result.operations[0].status }}\"\n}\n]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -688,
+        256
+      ],
+      "id": "b8ade7d9-e7a9-43fa-9925-3f100cf293f1",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.operations[0].operation.metadata.video.fifeUrl }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        160
+      ],
+      "id": "5de41084-1613-4c6b-92e8-6ca0e115ee4d",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "42979634-b33e-4eb1-a050-82fd543abfa4",
+              "name": "projectId",
+              "value": "<input projectId>",
+              "type": "string"
+            },
+            {
+              "id": "81dd6c63-46cd-4489-b913-42530d599e27",
+              "name": "flow_auth_token",
+              "value": "=<input flow_auth_token>",
+              "type": "string"
+            },
+            {
+              "id": "f7be1a2f-52a1-4f54-ba54-91ebb71f53a1",
+              "name": "prompt",
+              "value": "<input prompt>",
+              "type": "string"
+            },
+            {
+              "id": "533b21eb-8163-4f39-9264-194eb006c745",
+              "name": "videoModelKey",
+              "value": "veo_3_1_t2v_fast",
+              "type": "string"
+            },
+            {
+              "id": "db61e2b7-ecd0-4a3b-a4f1-16050f934006",
+              "name": "aspectRatio",
+              "value": "VIDEO_ASPECT_RATIO_LANDSCAPE",
+              "type": "string"
+            },
+            {
+              "id": "6b290b2c-e4f8-44a2-84ce-262ccb10151c",
+              "name": "Token Apikey nanoai",
+              "value": "<input Token Apikey nanoai>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1536,
+        256
+      ],
+      "id": "6d2582c5-8b23-4f77-bed2-8c89cd1beda1",
+      "name": "Setup first"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1d38ae4a-52e1-4e9a-92d4-856505245c7c",
+              "leftValue": "={{ $json.message }}",
+              "rightValue": "successfully",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -896,
+        256
+      ],
+      "id": "c9bd9d1c-3b5a-4bee-bbe3-01e588723723",
+      "name": "If1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -896,
+        512
+      ],
+      "id": "76df1937-5824-4cf3-83b8-7c7feca0e7a3",
+      "name": "Wait",
+      "webhookId": "72e1afa4-b18c-462c-bf58-3fe8b4dca630"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n## Cài đặt ban đầu (Setup First)\n\n- Input Authorization <not include Bearer>\n- Input FLOW Project ID\n- Input Token APIKEY nanoai.pics (soldve reCaptcha)\n- Input Ptompt video\n\n## Lưu ý\n- Hướng dẫn lấy Project ID và Authorization bạn có thể tham khảo [tại đây.](https://workflowfree.com/huong-dan-lay-authorization-va-project_id-cho-quy-trinh-tu-dong-hoa-tao-video-voi-google-veo-3-1/)\n\n- Đăng ký tài khoản tại nanoai.pics\n- Truy cập [link](https://nanoai.pics/account) để lấy Token APIKEY nanoai\n\n## Notes\n- You can refer to the guide on how to obtain the Project ID and Authorization [here](https://workflowfree.com/huong-dan-lay-authorization-va-project_id-cho-quy-trinh-tu-dong-hoa-tao-video-voi-google-veo-3-1/).\n\n- Register an account at **nanoai.pics**  \n- Visit this [link](https://nanoai.pics/account) to get the **NanoAI API Key (Token)**\n",
+        "height": 800,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1632,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "1cf89de6-a8da-498c-be98-09433a90c398",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Text to video\nChange the model and corresponding aspect ratio for each type of Google account below\n\n## Text to video\nChange the model and corresponding aspect ratio for each type of Google account below\n\n## Gemini PRO\n### Portrait\nModel:\nveo_3_1_t2v_fast_portrait\nAspect Ratio: \nVIDEO_ASPECT_RATIO_PORTRAIT\n\n### Landscape\nModel:\nveo_3_1_t2v_fast\nAspect Ratio: \nVIDEO_ASPECT_RATIO_LANDSCAPE\n\n## GEMINI ULTRA\n### Landscape\nModel:\nveo_3_1_t2v_fast_ultra\nAspect Ratio: \nVIDEO_ASPECT_RATIO_LANDSCAPE\n\n### Portrait\nModel:\nveo_3_1_t2v_fast_portrait_ultra\nAspect Ratio: \nVIDEO_ASPECT_RATIO_PORTRAIT",
+        "height": 872,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2160,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "ec836219-c738-4c0a-b9a6-89a46f6d0d39",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "\n\n### Workflow được chia sẻ trên trên website: [workflowfree.com](http://workflowfree.com)\n- Chia sẻ các quy trình tự động hoá N8N\n\n### Workflows shared on the website: [workflowfree.com](http://workflowfree.com)\n- Sharing N8N automation workflows\n\n\n![Guide](https://workflowfree.com/wp-content/uploads/2025/04/Dang-video-len-fanapage-n8n-9.jpg)\n\n## Theo dõi mình qua (Follow Me)\nFacebook: [fb.com/mr.linh.dinh](http://fb.com/mr.linh.dinh)\nThreads: [@linh.dinhxuan](https://www.threads.net/@linh.dinhxuan)\nInstagram: [IG/linh.dinhxuan](https://www.instagram.com/linh.dinhxuan/)",
+        "height": 800,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2592,
+        208
+      ],
+      "typeVersion": 1,
+      "id": "25ff00e1-1e15-432e-9765-97a8c2761cfa",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.operations[0].status }}",
+                    "rightValue": "=MEDIA_GENERATION_STATUS_FAILED",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "afbbba27-6318-4e43-9472-bf9b8c42c778"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Failed"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "945c7a1c-a2be-451f-9d4b-4053f5b637f0",
+                    "leftValue": "={{ $json.operations[0].status }}",
+                    "rightValue": "MEDIA_GENERATION_STATUS_SUCCESSFUL",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Successtul"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cde1c20e-7851-4304-a647-43d234998c35",
+                    "leftValue": "={{ $json.operations[0].status }}",
+                    "rightValue": "MEDIA_GENERATION_STATUS_ACTIVE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Active"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -272,
+        240
+      ],
+      "id": "a0d32f78-87b3-4e30-a47f-c8bddd47d0c2",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Lỗi tạo video"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5340928a-b97f-40cb-8002-2c3bcb5f7295",
+      "name": "Stop and Error"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Setup first",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup first": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "552b46bb-4fa9-4459-a7dd-06620b725df6",
+  "activeVersionId": null,
+  "versionCounter": 1,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-01-01T08:32:04.329Z",
+      "createdAt": "2026-01-01T08:32:04.329Z",
+      "role": "workflow:owner",
+      "workflowId": "i2f56st3S3Oy5Fww",
+      "projectId": "1uTvCtZTXcZZgYo6",
+      "project": {
+        "updatedAt": "2025-11-07T10:21:21.281Z",
+        "createdAt": "2025-11-07T10:17:33.127Z",
+        "id": "1uTvCtZTXcZZgYo6",
+        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
+      }
+    }
+  ]
+}

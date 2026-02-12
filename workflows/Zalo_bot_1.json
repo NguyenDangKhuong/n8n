@@ -1,0 +1,74 @@
+[
+  {
+    "updatedAt": "2026-01-02T10:00:14.000Z",
+    "createdAt": "2026-01-02T09:57:53.626Z",
+    "id": "1VEli53tHkMd23oK",
+    "name": "Zalo bot",
+    "description": null,
+    "active": false,
+    "isArchived": true,
+    "nodes": [
+      {
+        "parameters": {
+          "content": "Zalo bot bằng AI",
+          "height": 528,
+          "width": 1248,
+          "color": 1
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -2288,
+          -208
+        ],
+        "typeVersion": 1,
+        "id": "c078e020-865c-4c8a-a1f6-36145ab34f75",
+        "name": "Sticky Note1"
+      },
+      {
+        "id": "f681657f-9864-49c3-b4ee-87d281c37551",
+        "typeVersion": 1.1,
+        "name": "Start",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          -2496,
+          -208
+        ],
+        "parameters": {
+          "inputSource": "passthrough"
+        }
+      }
+    ],
+    "connections": {},
+    "settings": {
+      "executionOrder": "v1",
+      "availableInMCP": false
+    },
+    "staticData": null,
+    "meta": null,
+    "pinData": null,
+    "versionId": "c87db879-be7e-4532-bf8d-ebc7885752a0",
+    "activeVersionId": null,
+    "versionCounter": 4,
+    "triggerCount": 0,
+    "tags": [],
+    "shared": [
+      {
+        "updatedAt": "2026-01-02T09:57:53.631Z",
+        "createdAt": "2026-01-02T09:57:53.631Z",
+        "role": "workflow:owner",
+        "workflowId": "1VEli53tHkMd23oK",
+        "projectId": "1uTvCtZTXcZZgYo6",
+        "project": {
+          "updatedAt": "2025-11-07T10:21:21.281Z",
+          "createdAt": "2025-11-07T10:17:33.127Z",
+          "id": "1uTvCtZTXcZZgYo6",
+          "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
+          "type": "personal",
+          "icon": null,
+          "description": null,
+          "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,418 @@
+{
+  "updatedAt": "2026-01-04T03:12:49.713Z",
+  "createdAt": "2026-01-03T07:47:42.687Z",
+  "id": "WhfrIeJWjxJ2J0Be",
+  "name": "Download video tiktok no watermark - Share Free",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ $json['Link video'] }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/91.0.4472.124"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "7b88b3a5-f58e-47af-bf73-b03856093c70",
+      "name": "Get TikTok Video Page Data",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        864,
+        208
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "jsCode": "const html = $input.first().json.data;\nconst headers = $input.first().json.headers || {};\nconst cookies = headers['set-cookie'] || [];\n\nif (!html) {\n  throw new Error(\"HTML body is undefined. Check the previous node's output.\");\n}\nconst regex = /<script id=\"__UNIVERSAL_DATA_FOR_REHYDRATION__\" type=\"application\\/json\">([\\s\\S]*?)<\\/script>/;\nconst match = html.match(regex);\n\nif (match) {\n  const jsonStr = match[1];\n  const data = JSON.parse(jsonStr);\n  const videoUrl = data?.__DEFAULT_SCOPE__?.[\"webapp.video-detail\"]?.itemInfo?.itemStruct?.video?.playAddr;\n  if (!videoUrl) {\n    throw new Error(\"Could not find video URL in the JSON data.\");\n  }\n  return [{ json: { videoUrl, cookies: cookies.join('; ') } }];\n} else {\n  throw new Error(\"Could not find __UNIVERSAL_DATA_FOR_REHYDRATION__ script in the HTML.\");\n}"
+      },
+      "id": "7681ba46-1341-4be3-9520-bcc9d0864082",
+      "name": "Scrape raw video URL",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1312,
+        208
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.videoUrl }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+            },
+            {
+              "name": "Referer",
+              "value": "https://www.tiktok.com/"
+            },
+            {
+              "name": "Accept",
+              "value": "video/mp4,video/webm,video/*;q=0.9,application/octet-stream;q=0.8"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "en-US,en;q=0.5"
+            },
+            {
+              "name": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "name": "Cookie",
+              "value": "={{ $json.cookies }}"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "1ce2b9ae-583e-4a87-a60d-2169db3935f2",
+      "name": "Output video file without watermark",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1728,
+        208
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "content": "## 1. Load the video page\nOpen this node and replace the URL with the one of the video you want to download without a watermark.\n\nA Tiktok video URL looks like: https://www.tiktok.com/@Username_here/video/Video_ID_Here\n\nOutputs the returned page HTML along with the session cookies\n\n",
+        "height": 360,
+        "width": 460,
+        "color": 6
+      },
+      "id": "2a596f97-8fd3-4a69-9101-60e85b769b01",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        688,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 2. Find the raw video URL\nParses through all of the HTML and finds the section containing the video URL before the watermark is applied",
+        "height": 360,
+        "width": 380,
+        "color": 5
+      },
+      "id": "9d4b731f-1d9f-4428-982c-4590eb8b6432",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1168,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 3. Output video file without watermark\nUsing the cookies from step 1, a request is made to access the original video file as shown on TikTok",
+        "height": 360,
+        "width": 400,
+        "color": 4
+      },
+      "id": "3fc224ba-0033-43c4-b549-5fd61c8542ca",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1568,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "name": "={{ $binary.data.fileName }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1xSgxS3ehPGRY1dWAbPaSA8k1huFCy_mk",
+          "mode": "list",
+          "cachedResultName": "Ảnh (test)",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1xSgxS3ehPGRY1dWAbPaSA8k1huFCy_mk"
+        },
+        "options": {}
+      },
+      "id": "c13924a9-e56d-42a9-867a-73a5857406b2",
+      "name": "Upload to Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        1312,
+        592
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2TIL3MYULkEvveGs",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json.id }}"
+        },
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "writer",
+            "type": "anyone",
+            "allowFileDiscovery": true
+          }
+        },
+        "options": {}
+      },
+      "id": "89eb0d02-dfdb-42fe-8cd3-493700ff3614",
+      "name": "Set file permissions to public with link",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        1744,
+        592
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "2TIL3MYULkEvveGs",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## (Optional) Upload video to Google Drive\nAn expression is used to save the file to your Google Drive as Video_ID.mp4\n\nNote: Must have Google Drive API enabled in [Google Cloud Console](https://console.cloud.google.com/apis/api/drive.googleapis.com/overview) OAuth ClientID and Client Secret credentials setup",
+        "height": 320,
+        "width": 800,
+        "color": 7
+      },
+      "id": "0f0d0055-1be1-4b45-9d51-5f38c562453d",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1168,
+        400
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "formTitle": "Tải video tiktok",
+        "formDescription": "Tự động lấy link tải video tiktok không logo",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Link video",
+              "placeholder": "Nhập link video vào đây",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Lấy link"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        208
+      ],
+      "id": "0edc4879-3d82-4a03-8486-bb8061195780",
+      "name": "On form submission",
+      "webhookId": "0cb31de0-af87-45be-9d71-8d3f4af483e6"
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "respondWith": "returnBinary",
+        "completionTitle": "Tải xuống video",
+        "completionMessage": "Video đang được xử lý tải xuống",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        592
+      ],
+      "id": "a0b2750f-2958-4c1d-a952-52da8d3f5ff4",
+      "name": "Form",
+      "webhookId": "939862a8-8c99-4de4-ad5c-b206134cae5b"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map((item, index) => {\n  const indexNumber = index + 1;\n  const filename = `video-${indexNumber}.mp4`;\n\n  item.binary.data.fileName = filename;\n  item.binary.data.name = `video-${indexNumber}`;\n  \n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        864,
+        592
+      ],
+      "id": "65b1b979-90ec-49f5-9b8f-b409b46af67e",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## Tải video tiktok không có logo\n![Guide](https://workflowfree.com/wp-content/uploads/2025/04/Dang-video-len-fanapage-n8n-9.jpg)\n\n## Theo dõi mình qua:\nFacebook: [fb.com/mr.linh.dinh](http://fb.com/mr.linh.dinh)\nThreads: [@linh.dinhxuan](https://www.threads.net/@linh.dinhxuan)\nInstagram: [IG/linh.dinhxuan](https://www.instagram.com/linh.dinhxuan/)",
+        "height": 600,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "c93831cc-fde3-4c6d-b430-6e74a2b72dee",
+      "name": "Sticky Note6"
+    }
+  ],
+  "connections": {
+    "Scrape raw video URL": {
+      "main": [
+        [
+          {
+            "node": "Output video file without watermark",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Set file permissions to public with link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get TikTok Video Page Data": {
+      "main": [
+        [
+          {
+            "node": "Scrape raw video URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output video file without watermark": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Get TikTok Video Page Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set file permissions to public with link": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Upload to Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "799b351e-3a67-4576-aa93-477a1029dd50",
+  "activeVersionId": null,
+  "versionCounter": 2,
+  "triggerCount": 0,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2026-01-03T07:47:42.693Z",
+      "createdAt": "2026-01-03T07:47:42.693Z",
+      "role": "workflow:owner",
+      "workflowId": "WhfrIeJWjxJ2J0Be",
+      "projectId": "1uTvCtZTXcZZgYo6",
+      "project": {
+        "updatedAt": "2025-11-07T10:21:21.281Z",
+        "createdAt": "2025-11-07T10:17:33.127Z",
+        "id": "1uTvCtZTXcZZgYo6",
+        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
+      }
+    }
+  ]
+}

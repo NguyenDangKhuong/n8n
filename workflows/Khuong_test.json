@@ -1,0 +1,239 @@
+{
+  "updatedAt": "2025-12-31T08:21:23.000Z",
+  "createdAt": "2025-12-31T08:10:28.246Z",
+  "id": "oNRSYDL35jxkfyI6",
+  "name": "Khuong test",
+  "description": null,
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        80,
+        560
+      ],
+      "id": "21ba4cdf-e5eb-432d-a28c-25f13e30c02c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fda05ec8-3628-42ae-bf85-e21933209a62",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        160
+      ],
+      "id": "c24843ab-de37-4af9-bbdd-c8fb7a1b5431",
+      "name": "Webhook",
+      "webhookId": "fda05ec8-3628-42ae-bf85-e21933209a62"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "timeout": 6000000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        384,
+        448
+      ],
+      "id": "be430349-17b9-4bbb-b844-c60e4a2885a1",
+      "name": "OpenAI Chat Model",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "s68VwQ7zAmVodYID",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Trả lời câu nhắn tin của user nha:  {{ $json.body.message.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        432,
+        208
+      ],
+      "id": "6c960dbd-27bf-43bc-8441-5e9bfb086a61",
+      "name": "AI local ubbutu"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/sendPhoto",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=chat_id",
+              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
+            },
+            {
+              "name": "caption",
+              "value": "My photo"
+            },
+            {
+              "name": "photo",
+              "value": "https://placehold.co/600x400"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        832,
+        400
+      ],
+      "id": "0e8ebc42-2d54-44ad-887b-5c62a038b55f",
+      "name": "Trả lời bằng photo trên zalo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/sendMessage",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $('Webhook').item.json.body.message.chat.id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        832,
+        112
+      ],
+      "id": "ea063d3c-c746-4cb4-bc97-264df4a5a714",
+      "name": "Trả lời bằng text zalo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bot-api.zaloplatforms.com/bot3705241397568249916:fhCEeXdgbUcQnRqWRgVjlurHgMWDEtiMnliVovjeBMyKlUrhjYRlOHXorCKDNAJT/setWebhook",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://n8n.thetaphoa.store/webhook/fda05ec8-3628-42ae-bf85-e21933209a629a62"
+            },
+            {
+              "name": "secret_token",
+              "value": "secret_token_khuong-zalo"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "aa1aba48-b9c1-475b-99a7-eec388c9303d",
+      "name": "verify zalo bot"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI local ubbutu",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI local ubbutu",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI local ubbutu": {
+      "main": [
+        [
+          {
+            "node": "Trả lời bằng text zalo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v0",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "saveExecutionProgress": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "ec2e3b6e-ac30-4b0a-8137-6163470912ff",
+  "activeVersionId": null,
+  "versionCounter": 12,
+  "triggerCount": 1,
+  "tags": [],
+  "shared": [
+    {
+      "updatedAt": "2025-12-31T08:10:28.252Z",
+      "createdAt": "2025-12-31T08:10:28.252Z",
+      "role": "workflow:owner",
+      "workflowId": "oNRSYDL35jxkfyI6",
+      "projectId": "1uTvCtZTXcZZgYo6",
+      "project": {
+        "updatedAt": "2025-11-07T10:21:21.281Z",
+        "createdAt": "2025-11-07T10:17:33.127Z",
+        "id": "1uTvCtZTXcZZgYo6",
+        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
+      }
+    }
+  ]
+}

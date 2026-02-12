@@ -241,7 +241,6 @@ docker compose down && docker compose up -d
 
 **Running on same VM:**
 - **MinIO S3:** https://minio.thetaphoa.store (file storage)
-- **Postiz:** http://localhost:5000 (social media)
 
 **Other services:**
 - **NAS:** https://nas.thetaphoa.store
