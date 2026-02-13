@@ -1,11 +1,6 @@
 {
-  "updatedAt": "2025-12-31T08:21:23.000Z",
-  "createdAt": "2025-12-31T08:10:28.246Z",
-  "id": "oNRSYDL35jxkfyI6",
+  "id": "jLc6YTAABx5GFRQV",
   "name": "Khuong test",
-  "description": null,
-  "active": false,
-  "isArchived": true,
   "nodes": [
     {
       "parameters": {},
@@ -204,36 +199,9 @@
   },
   "settings": {
     "executionOrder": "v0",
-    "availableInMCP": false,
-    "timeSavedMode": "fixed",
     "saveExecutionProgress": true,
-    "callerPolicy": "workflowsFromSameOwner"
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
-  "staticData": null,
-  "meta": null,
-  "pinData": {},
-  "versionId": "ec2e3b6e-ac30-4b0a-8137-6163470912ff",
-  "activeVersionId": null,
-  "versionCounter": 12,
-  "triggerCount": 1,
-  "tags": [],
-  "shared": [
-    {
-      "updatedAt": "2025-12-31T08:10:28.252Z",
-      "createdAt": "2025-12-31T08:10:28.252Z",
-      "role": "workflow:owner",
-      "workflowId": "oNRSYDL35jxkfyI6",
-      "projectId": "1uTvCtZTXcZZgYo6",
-      "project": {
-        "updatedAt": "2025-11-07T10:21:21.281Z",
-        "createdAt": "2025-11-07T10:17:33.127Z",
-        "id": "1uTvCtZTXcZZgYo6",
-        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
-        "type": "personal",
-        "icon": null,
-        "description": null,
-        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
-      }
-    }
-  ]
+  "active": false
 }

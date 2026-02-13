@@ -1,11 +1,6 @@
 {
-  "updatedAt": "2025-11-07T16:05:16.258Z",
-  "createdAt": "2025-11-07T16:05:16.258Z",
-  "id": "7dAG0hGUIHUoLyON",
+  "id": "vni1V5W1Z8Y5eR1y",
   "name": "My workflow 2",
-  "description": null,
-  "active": false,
-  "isArchived": false,
   "nodes": [
     {
       "parameters": {
@@ -699,33 +694,9 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
   },
-  "staticData": null,
-  "meta": null,
-  "pinData": {},
-  "versionId": "7cb60325-335a-47a4-b035-72162c3fc3eb",
-  "activeVersionId": null,
-  "versionCounter": 1,
-  "triggerCount": 0,
-  "tags": [],
-  "shared": [
-    {
-      "updatedAt": "2025-11-07T16:05:16.261Z",
-      "createdAt": "2025-11-07T16:05:16.261Z",
-      "role": "workflow:owner",
-      "workflowId": "7dAG0hGUIHUoLyON",
-      "projectId": "1uTvCtZTXcZZgYo6",
-      "project": {
-        "updatedAt": "2025-11-07T10:21:21.281Z",
-        "createdAt": "2025-11-07T10:17:33.127Z",
-        "id": "1uTvCtZTXcZZgYo6",
-        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
-        "type": "personal",
-        "icon": null,
-        "description": null,
-        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
-      }
-    }
-  ]
+  "active": false
 }

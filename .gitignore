@@ -1,0 +1,19 @@
+# Data directories (Docker volumes)
+db_data/
+n8n_data/
+redis_data/
+
+# Environment files with secrets
+.env
+
+# Backup files
+.env.backup
+workflows-backup.json
+
+# Node modules
+node_modules/
+n8n-custom-mcp/node_modules/
+n8n-custom-mcp/dist/
+
+# OS files
+.DS_Store

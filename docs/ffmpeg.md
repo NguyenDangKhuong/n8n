@@ -2,20 +2,33 @@
 
 ## Tổng quan
 
-n8n sử dụng custom Docker image có tích hợp FFmpeg để xử lý video trực tiếp trong workflows.
+n8n sử dụng custom Docker image có tích hợp **FFmpeg 6.1.2** để xử lý video trực tiếp trong workflows.
 
-Image được build bằng multi-stage Dockerfile:
-- **Stage 1:** Cài FFmpeg trong Alpine
-- **Stage 2:** Copy binary FFmpeg vào n8n image
+### Cách FFmpeg được cài đặt
+
+FFmpeg được cài bằng phương pháp **isolated library** — tất cả shared libraries nằm trong `/opt/ffmpeg-libs/`, không overwrite system libs của n8n:
+
+```
+/usr/bin/ffmpeg      → wrapper script (set LD_LIBRARY_PATH trước khi chạy)
+/usr/bin/ffmpeg.bin  → binary thật
+/opt/ffmpeg-libs/    → tất cả shared libraries (libavcodec, libx264, etc.)
+```
+
+> **Tại sao không copy lib thẳng vào /usr/lib?**
+> n8n dùng hardened Alpine — nếu overwrite system libs sẽ phá Node.js → n8n crash với lỗi `Invalid URL`.
 
 ## Kiểm tra FFmpeg
 
 ```bash
 # Kiểm tra version
-docker exec n8n ffmpeg -version
+docker exec n8n-mcp ffmpeg -version
 
 # Kiểm tra ffprobe
-docker exec n8n ffprobe -version
+docker exec n8n-mcp ffprobe -version
+
+# Test encode (tạo video test)
+docker exec n8n-mcp ffmpeg -f lavfi -i testsrc=duration=2:size=320x240:rate=24 \
+  -c:v libx264 -c:a aac -y /tmp/test.mp4
 ```
 
 ## Sử dụng trong n8n
@@ -54,35 +67,35 @@ return [{ json: { success: true, output: outputFile } }];
 
 ## Các lệnh FFmpeg thường dùng
 
-### Merge video (nối video)
+### Ghép video (concat)
 
-**Cách 1: Concat protocol (cùng codec)**
-```bash
-ffmpeg -i "concat:video1.ts|video2.ts" -c copy output.mp4
-```
-
-**Cách 2: Concat demuxer (khuyên dùng)**
+**Cách 1: Concat demuxer (khuyên dùng, cùng codec)**
 ```bash
 # Tạo file list
 echo "file '/files/video1.mp4'" > /files/filelist.txt
 echo "file '/files/video2.mp4'" >> /files/filelist.txt
 
-# Merge
+# Ghép
 ffmpeg -f concat -safe 0 -i /files/filelist.txt -c copy /files/merged.mp4
 ```
 
-**Cách 3: Re-encode (khác codec/resolution)**
+**Cách 2: Re-encode (khác codec/resolution)**
 ```bash
 ffmpeg -i /files/video1.mp4 -i /files/video2.mp4 \
   -filter_complex "[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1" \
   /files/output.mp4
 ```
 
-### Thêm nhạc nền vào video
+### Ghép nhạc vào video
 
 ```bash
+# Thêm nhạc nền (giữ video gốc, encode audio)
 ffmpeg -i /files/video.mp4 -i /files/music.mp3 \
   -c:v copy -c:a aac -shortest /files/output.mp4
+
+# Thay thế audio hoàn toàn
+ffmpeg -i /files/video.mp4 -i /files/music.mp3 \
+  -c:v copy -c:a aac -map 0:v:0 -map 1:a:0 -shortest /files/output.mp4
 ```
 
 ### Tạo thumbnail
@@ -107,23 +120,27 @@ ffmpeg -i /files/input.mp4 \
   /files/tiktok_ready.mp4
 ```
 
-## Troubleshooting
+## Troubleshooting FFmpeg
 
-### FFmpeg không tìm thấy
-```bash
-# Kiểm tra binary tồn tại
-docker exec n8n which ffmpeg
-docker exec n8n which ffprobe
-```
+### "Error loading shared library..."
 
-Nếu không có, rebuild image:
+FFmpeg cần các lib trong `/opt/ffmpeg-libs/`. Rebuild image:
 ```bash
 docker compose build --no-cache
 docker compose up -d
 ```
 
-### Permission denied
-Đảm bảo container chạy với `user: root` trong docker-compose.yml (đã cấu hình sẵn).
+### "No such file or directory"
 
-### File không tìm thấy
-File phải nằm trong `/files/` — tương ứng `./local-files/` trên host. Kiểm tra `N8N_RESTRICT_FILE_ACCESS_TO=/files/`.
+File phải nằm trong `/files/` — tương ứng `./local-files/` trên host:
+```bash
+# Trên host
+ls ./local-files/
+
+# Trong container
+docker exec n8n-mcp ls /files/
+```
+
+### "Permission denied"
+
+Container chạy `user: root` (đã cấu hình). Nếu gặp lỗi, kiểm tra quyền thư mục `./local-files`.

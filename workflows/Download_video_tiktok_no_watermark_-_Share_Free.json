@@ -1,11 +1,6 @@
 {
-  "updatedAt": "2026-01-04T03:12:49.713Z",
-  "createdAt": "2026-01-03T07:47:42.687Z",
-  "id": "WhfrIeJWjxJ2J0Be",
+  "id": "4ngZUljpA8szpUWK",
   "name": "Download video tiktok no watermark - Share Free",
-  "description": null,
-  "active": false,
-  "isArchived": false,
   "nodes": [
     {
       "parameters": {
@@ -384,35 +379,8 @@
   },
   "settings": {
     "executionOrder": "v1",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "staticData": null,
-  "meta": {
-    "templateCredsSetupCompleted": true
-  },
-  "pinData": {},
-  "versionId": "799b351e-3a67-4576-aa93-477a1029dd50",
-  "activeVersionId": null,
-  "versionCounter": 2,
-  "triggerCount": 0,
-  "tags": [],
-  "shared": [
-    {
-      "updatedAt": "2026-01-03T07:47:42.693Z",
-      "createdAt": "2026-01-03T07:47:42.693Z",
-      "role": "workflow:owner",
-      "workflowId": "WhfrIeJWjxJ2J0Be",
-      "projectId": "1uTvCtZTXcZZgYo6",
-      "project": {
-        "updatedAt": "2025-11-07T10:21:21.281Z",
-        "createdAt": "2025-11-07T10:17:33.127Z",
-        "id": "1uTvCtZTXcZZgYo6",
-        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
-        "type": "personal",
-        "icon": null,
-        "description": null,
-        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
-      }
-    }
-  ]
+  "active": false
 }

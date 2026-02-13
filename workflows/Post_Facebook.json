@@ -1,11 +1,6 @@
 {
-  "updatedAt": "2026-01-04T03:12:20.181Z",
-  "createdAt": "2026-01-02T09:31:17.154Z",
-  "id": "c5T34UrLQwzPxIV4",
+  "id": "WaVBoPMyEucoWdL2",
   "name": "Post Facebook",
-  "description": null,
-  "active": true,
-  "isArchived": false,
   "nodes": [
     {
       "parameters": {
@@ -1095,39 +1090,8 @@
   },
   "settings": {
     "executionOrder": "v1",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "staticData": {
-    "node:Schedule Trigger1": {
-      "recurrenceRules": []
-    }
-  },
-  "meta": {
-    "templateCredsSetupCompleted": true
-  },
-  "pinData": {},
-  "versionId": "21416269-1ff1-4859-89aa-bde0aa67ad89",
-  "activeVersionId": "21416269-1ff1-4859-89aa-bde0aa67ad89",
-  "versionCounter": 50,
-  "triggerCount": 1,
-  "tags": [],
-  "shared": [
-    {
-      "updatedAt": "2026-01-02T09:31:17.157Z",
-      "createdAt": "2026-01-02T09:31:17.157Z",
-      "role": "workflow:owner",
-      "workflowId": "c5T34UrLQwzPxIV4",
-      "projectId": "1uTvCtZTXcZZgYo6",
-      "project": {
-        "updatedAt": "2025-11-07T10:21:21.281Z",
-        "createdAt": "2025-11-07T10:17:33.127Z",
-        "id": "1uTvCtZTXcZZgYo6",
-        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
-        "type": "personal",
-        "icon": null,
-        "description": null,
-        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
-      }
-    }
-  ]
+  "active": false
 }

@@ -6,32 +6,44 @@ Tài liệu dự án n8n - Workflow Automation tại `n8n.thetaphoa.store`.
 
 | Tài liệu | Mô tả |
 |---|---|
-| [Setup & Deployment](setup.md) | Hướng dẫn cài đặt, build Docker, deploy |
-| [Docker & Infrastructure](docker.md) | Chi tiết Dockerfile, docker-compose, volumes, networks |
-| [Workflows](workflows.md) | Danh sách và mô tả 16 workflows hiện tại |
-| [FFmpeg Integration](ffmpeg.md) | Hướng dẫn sử dụng FFmpeg trong n8n |
-| [TikTok Integration](tiktok.md) | Cài đặt community node TikTok, posting workflows |
+| [Setup & Deployment](setup.md) | Hướng dẫn cài đặt, cấu hình .env, deploy |
+| [Docker & Infrastructure](docker.md) | Chi tiết Dockerfile, docker-compose, services |
+| [Workflows](workflows.md) | Danh sách và mô tả 17 workflows hiện tại |
+| [FFmpeg Integration](ffmpeg.md) | FFmpeg isolated libs, ghép video, ghép nhạc |
+| [MCP Server](mcp-server.md) | MCP Server cho AI agents (OpenClaw, Claude, etc.) |
+| [TikTok Integration](tiktok.md) | Community node TikTok, posting workflows |
 | [Troubleshooting](troubleshooting.md) | Xử lý lỗi thường gặp |
 
 ## Tổng quan hệ thống
 
 ```
-┌─────────────────────────────────────────────┐
-│              n8n.thetaphoa.store             │
-│              (Reverse Proxy)                │
-├─────────────────────────────────────────────┤
-│                                             │
-│   n8n (port 5678)                           │
-│   ├── Custom Docker Image (n8n + FFmpeg)    │
-│   ├── Community Nodes: TikTok, Zalo         │
-│   ├── Volume: n8n_data                      │
-│   └── Local files: ./local-files → /files   │
-│                                             │
-│   MinIO S3 (port 9000/9001)                 │
-│   └── s3.thetaphoa.store                    │
-│                                             │
-│   OpenClaw Gateway (port 18789-18790)       │
-│   CLI Proxy API (multi-port)                │
-│                                             │
-└─────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│                n8n.thetaphoa.store                   │
+│                (Reverse Proxy)                       │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│  ┌── n8n (port 5678) ─────────────────────────┐     │
+│  │   Custom Image: n8n + FFmpeg 6.1.2         │     │
+│  │   Database: PostgreSQL 16                  │     │
+│  │   Queue: Redis (Bull)                      │     │
+│  │   Execution: Queue mode + Worker           │     │
+│  │   Volume: ./n8n_data, ./local-files        │     │
+│  └────────────────────────────────────────────┘     │
+│                                                     │
+│  ┌── n8n-worker ──────────────────────────────┐     │
+│  │   Same FFmpeg image, shared data           │     │
+│  └────────────────────────────────────────────┘     │
+│                                                     │
+│  ┌── n8n-custom-mcp (port 3001) ──────────────┐     │
+│  │   MCP Server for AI agents                 │     │
+│  │   12 tools: CRUD, execute, debug workflows │     │
+│  └────────────────────────────────────────────┘     │
+│                                                     │
+│  ┌── Supporting Services ─────────────────────┐     │
+│  │   PostgreSQL 16 (internal)                 │     │
+│  │   Redis Alpine (internal)                  │     │
+│  │   OpenClaw Gateway (18789-18790)           │     │
+│  └────────────────────────────────────────────┘     │
+│                                                     │
+└─────────────────────────────────────────────────────┘
 ```

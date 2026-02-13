@@ -1,0 +1,1060 @@
+{
+  "id": "4eSpFbYqdJcI6PCf",
+  "name": "Tiktok menamine2 - khẩu trang 9a",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1472,
+        1760
+      ],
+      "id": "e876da8e-89f4-4339-8480-3299e206d564",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "https://shop.thetaphoa.store/api/veo3-tokens",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1248,
+        1664
+      ],
+      "id": "3568fbae-232f-4c8b-9aec-ecca25feea1e",
+      "name": "get token veo3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "19257071-5bd9-41c9-a242-ddccd226554c",
+              "leftValue": "={{ $json.success }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        1120
+      ],
+      "id": "32c8740f-c520-43f2-957e-d706fb8d80f3",
+      "name": "check status"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bb52ec6b-2c36-4ad0-88d7-89b2f77ffbc4",
+              "leftValue": "={{ $json.operations[0].operation.metadata.video.fifeUrl }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1568,
+        992
+      ],
+      "id": "af398de5-4df8-4dd2-bd30-01b4fbf40374",
+      "name": "kiểm tra xem có file url"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        1280
+      ],
+      "id": "40451707-4742-420b-84cd-62f0995307f3",
+      "name": "Wait2",
+      "webhookId": "8752aac0-49ae-4a61-bea9-8128c0405e76"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1792,
+        1072
+      ],
+      "id": "6b598500-8a20-4cc5-9961-2f599e7d4529",
+      "name": "Wait3",
+      "webhookId": "45f420ee-7390-41d6-94c3-2f43030ee02b"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        128,
+        1584
+      ],
+      "id": "1e8c9009-f64a-46e3-b0b5-9db409d660c8",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/files/temp_video_{{ $itemIndex }}.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        1552
+      ],
+      "id": "b39d7ff6-993f-4370-b889-4630fb1a5b20",
+      "name": "ghi mấy video vô folder tạm"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/files/final_output.mp4",
+        "options": {
+          "dataPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        2016,
+        1568
+      ],
+      "id": "40741a6e-aa0f-4143-a915-e4e5b380fbbe",
+      "name": "lấy video ra"
+    },
+    {
+      "parameters": {
+        "command": "rm -f /files/*"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        2432,
+        1568
+      ],
+      "id": "5a422daf-cc5e-485b-9040-49f4c5eafbb8",
+      "name": "Xóa video sau đăng"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1920,
+        1568
+      ],
+      "id": "ce266a37-e5c4-48ca-8295-4408c1a1ff3e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://flow-api.nanoai.pics/api/fix/create-flow",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mjc2LCJyb2xlIjozLCJpYXQiOjE3NzA3NDA5NDh9.cOuA90MuxKposYRENvOSmeh70FXCfJhjvH9364JcHmA"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"flow_url\": \"https://aisandbox-pa.googleapis.com/v1/video:batchAsyncGenerateVideoText\",\n  \"flow_auth_token\": \"{{ $('get token veo3').item.json.data[0].value }}\",\n  \"body_json\": {\n    \"clientContext\": {\n      \"recaptchaContext\": {\n        \"token\": \"\",\n        \"applicationType\": \"RECAPTCHA_APPLICATION_TYPE_WEB\"\n      },\n      \"sessionId\": \";1770714262718\",\n      \"projectId\": \"ca491fb1-9f80-4c6a-9b69-8c0fadee7c0b\",\n      \"tool\": \"PINHOLE\",\n      \"userPaygateTier\": \"PAYGATE_TIER_TWO\"\n    },\n    \"requests\": [\n      {\n        \"aspectRatio\": \"VIDEO_ASPECT_RATIO_PORTRAIT\",\n        \"seed\": 27076,\n        \"textInput\": {\n          \"prompt\": \"{{ $json.output }}\"\n        },\n        \"videoModelKey\": \"veo_3_1_t2v_fast_portrait_ultra\",\n        \"metadata\": {\n          \"sceneId\": \"0a65fde6-44f0-4139-bf1c-8cc2e5357bd3\"\n        }\n      }\n    ]\n  },\n  \"is_proxy\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        448,
+        1136
+      ],
+      "id": "61f09f76-b4c1-46b1-b0ef-a97bf6bf0678",
+      "name": "Tạo video từ hình post"
+    },
+    {
+      "parameters": {
+        "url": "https://flow-api.nanoai.pics/api/fix/task-status",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "taskId",
+              "value": "={{ $(\"Tạo video từ hình post\").item.json.taskId }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('get token veo3').item.json.data[0].tokenCheckStatus }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        672,
+        1136
+      ],
+      "id": "ae522748-e6f8-4ac7-ba24-6ff388d84b8b",
+      "name": "Check status"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://aisandbox-pa.googleapis.com/v1/video:batchCheckAsyncVideoGenerationStatus",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "*/*"
+            },
+            {
+              "name": "accept-language",
+              "value": "en-AU,en-GB;q=0.9,en-US;q=0.8,en;q=0.7,vi;q=0.6"
+            },
+            {
+              "name": "authorization",
+              "value": "=Bearer {{ $('get token veo3').item.json.data[0].value }}"
+            },
+            {
+              "name": "origin",
+              "value": "https://labs.google"
+            },
+            {
+              "name": "priority",
+              "value": "u=1, i"
+            },
+            {
+              "name": "referer",
+              "value": "https://labs.google/"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Not(A:Brand\";v=\"8\", \"Chromium\";v=\"144\", \"Google Chrome\";v=\"144\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"Windows\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "empty"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "cors"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "cross-site"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "x-browser-channel",
+              "value": "stable"
+            },
+            {
+              "name": "x-browser-copyright",
+              "value": "Copyright 2026 Google LLC. All Rights reserved."
+            },
+            {
+              "name": "x-browser-validation",
+              "value": "AKIAtsVHZoiKbPixy+qSK1BgKWo="
+            },
+            {
+              "name": "x-browser-year",
+              "value": "2026"
+            },
+            {
+              "name": "x-client-data",
+              "value": "CK21yQEIjbbJAQijtskBCKmdygEIuubKAQiWocsBCIWgzQE="
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"operations\": [\n    {\n      \"operation\": {\n        \"name\": \"{{ $('Check status').item.json.result.operations[0].operation.name }}\"\n      },\n      \"status\": \"MEDIA_GENERATION_STATUS_ACTIVE\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1344,
+        1072
+      ],
+      "id": "71d0ad3b-8035-42b0-a2de-553beeacc936",
+      "name": "Lấy video url"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.operations[0].operation.metadata.video.fifeUrl }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1792,
+        1328
+      ],
+      "id": "b57204b8-f4fe-4d9b-a0d7-84d1866d0252",
+      "name": "Get video"
+    },
+    {
+      "parameters": {
+        "postSettings": {
+          "text": "={{ $('lấy data prompt').item.json.data[0].description }}",
+          "visibilityType": 0,
+          "allowComment": 1,
+          "scheduleTime": "=0",
+          "anchors": {
+            "anchor": [
+              {
+                "type": "product",
+                "productId": "={{ $('lấy data prompt').item.json.data[0].productId }}",
+                "displayName": "={{ $('lấy data prompt').item.json.data[0].productTitle }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-social-tiktok.tikTokUpload",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        1568
+      ],
+      "id": "3302cd48-b1a6-47cc-a2b5-b6467c7b6acb",
+      "name": "TikTok Upload File",
+      "credentials": {
+        "tiktokApi": {
+          "id": "UXpOpodAqPGk9di3",
+          "name": "TikTok Credential account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const minutes = Math.floor(Math.random() * 25) + 1;\nreturn [{ json: { delayMinutes: minutes } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1696,
+        1568
+      ],
+      "id": "a9cf3a6e-bb44-4cf7-98b6-a3a03e09017f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.delayMinutes }}",
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1472,
+        1568
+      ],
+      "id": "08de43a2-715b-425b-be13-bfe33bbf6092",
+      "name": "Wait",
+      "webhookId": "89953fda-8d4a-48a0-bacc-83d4bc52a9e6"
+    },
+    {
+      "parameters": {
+        "url": "https://shop.thetaphoa.store//api/tiktok-music?random=1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1104,
+        1552
+      ],
+      "id": "0bbf9a51-ce65-4f23-bb93-8178e8712a86",
+      "name": "Lấy link nhạc"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.music.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1312,
+        1552
+      ],
+      "id": "0c207070-6a46-4f74-a639-a19bafb6b302",
+      "name": "Lấy nhạc"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/files/temp_music.mp3",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        1504,
+        1552
+      ],
+      "id": "0a7126f1-485f-4357-811f-a43d2d0d84cb",
+      "name": "ghi nhạc trong file tạm"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.subPrompt }}  \"{{ $json.content }}\"\"",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -128,
+        1856
+      ],
+      "id": "789eb3cb-1981-44c6-b771-77e60ad68367",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data[0].prompts",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        1664
+      ],
+      "id": "a8a718b6-68b7-44a9-849e-d9a3ca742194",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -352,
+        1808
+      ],
+      "id": "757d22fe-b939-4a74-ae12-3ed44beb67ec",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "=claude-opus-4-6-thinking",
+          "mode": "id"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        2080
+      ],
+      "id": "a7304397-9af2-40fd-8ab1-af813aa338c6",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ZQmj6pJ5Zy0uP5z1",
+          "name": "CLI-proxy"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -64,
+        1552
+      ],
+      "id": "05adab93-0eac-4cf2-ac9b-4d1b9326b1d8",
+      "name": "Data merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2b827f27-a1db-401d-a00a-3d62a1b071b5",
+              "leftValue": "={{ $json.data[0].enabled }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -800,
+        1680
+      ],
+      "id": "488edb1b-c09c-4b27-bae4-fbf2e10558bb",
+      "name": "Check flow enable"
+    },
+    {
+      "parameters": {
+        "url": "https://shop.thetaphoa.store/api/autoflows?accountId=6984100221bd5a4f3e75f004&productId=1730748363759258203&randomPrompt=true",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1024,
+        1664
+      ],
+      "id": "61fb96bd-1d38-4a58-99dc-c663bddaddf8",
+      "name": "lấy data prompt"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "725206b9-7c31-4630-bbf9-bff5d17ce395",
+              "leftValue": "={{ $json.result.operations[0].operation.name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1120,
+        1072
+      ],
+      "id": "8eec3eab-1e81-40aa-920a-81eddd428566",
+      "name": "kiểm tra tên có tồn tại hay ko"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        672,
+        1552
+      ],
+      "id": "f006210b-909c-4e83-acbf-19e4157f3d1e",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('lấy data prompt').item.json.data[0].videoFiles[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        464,
+        1792
+      ],
+      "id": "84129372-df35-4863-ab3b-505cff57ca30",
+      "name": "Lấy video thật"
+    },
+    {
+      "parameters": {
+        "command": "# Bước 1: Normalize (fix resolution + FPS + audio)\ncount=0\nfor f in $(ls -v /files/temp_video_*.mp4); do\n  has_audio=$(ffprobe -v error -select_streams a -show_entries stream=codec_type -of csv=p=0 \"$f\")\n  if [ -z \"$has_audio\" ]; then\n    ffmpeg -y -i \"$f\" -f lavfi -i anullsrc=r=44100:cl=stereo \\\n      -vf \"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24\" \\\n      -c:v libx264 -preset fast -r 24 -c:a aac -ar 44100 -ac 2 \\\n      -shortest \"/files/normalized_${count}.mp4\"\n  else\n    ffmpeg -y -i \"$f\" \\\n      -vf \"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24\" \\\n      -c:v libx264 -preset fast -r 24 -c:a aac -ar 44100 -ac 2 \\\n      \"/files/normalized_${count}.mp4\"\n  fi\n  count=$((count+1))\ndone\n\n# Bước 2: Concat\nls -v /files/normalized_*.mp4 | sed \"s|^|file '|;s|$|'|\" > /files/concat_list.txt\nffmpeg -y -f concat -safe 0 -i /files/concat_list.txt -c copy /files/merged_output.mp4\n\n# Bước 3: Chèn nhạc\nffmpeg -y -i /files/merged_output.mp4 -i /files/temp_music.mp3 \\\n  -filter_complex \"[0:a]volume=1.0[va];[1:a]volume=0.2[ma];[va][ma]amix=inputs=2:duration=first:dropout_transition=2[aout]\" \\\n  -map 0:v -map \"[aout]\" -c:v copy -c:a aac -b:a 192k \\\n  /files/final_output.mp4"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        1568
+      ],
+      "id": "11194531-ba00-4097-86fd-0e137fb8c20f",
+      "name": "Execute Command"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "get token veo3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get token veo3": {
+      "main": [
+        [
+          {
+            "node": "lấy data prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check status": {
+      "main": [
+        [
+          {
+            "node": "kiểm tra tên có tồn tại hay ko",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "kiểm tra xem có file url": {
+      "main": [
+        [
+          {
+            "node": "Get video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Lấy video url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tạo video từ hình post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ghi mấy video vô folder tạm": {
+      "main": [
+        [
+          {
+            "node": "Lấy link nhạc",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lấy video ra": {
+      "main": [
+        [
+          {
+            "node": "TikTok Upload File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tạo video từ hình post": {
+      "main": [
+        [
+          {
+            "node": "Check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check status": {
+      "main": [
+        [
+          {
+            "node": "check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy video url": {
+      "main": [
+        [
+          {
+            "node": "kiểm tra xem có file url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get video": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TikTok Upload File": {
+      "main": [
+        [
+          {
+            "node": "Xóa video sau đăng",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "get token veo3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy link nhạc": {
+      "main": [
+        [
+          {
+            "node": "Lấy nhạc",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy nhạc": {
+      "main": [
+        [
+          {
+            "node": "ghi nhạc trong file tạm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ghi nhạc trong file tạm": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Data merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Data merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data merge": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check flow enable": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lấy data prompt": {
+      "main": [
+        [
+          {
+            "node": "Check flow enable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "kiểm tra tên có tồn tại hay ko": {
+      "main": [
+        [
+          {
+            "node": "Lấy video url",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Lấy video thật",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "ghi mấy video vô folder tạm",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy video thật": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "lấy video ra",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "active": false
+}

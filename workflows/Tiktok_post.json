@@ -1,11 +1,6 @@
 {
-  "updatedAt": "2026-02-09T02:11:14.011Z",
-  "createdAt": "2026-01-07T07:15:01.974Z",
-  "id": "QCPX0Z7inOavmDlM",
+  "id": "Wcrxmt7YQqsGY0Gy",
   "name": "Tiktok post",
-  "description": null,
-  "active": false,
-  "isArchived": false,
   "nodes": [
     {
       "parameters": {
@@ -1211,33 +1206,8 @@
   },
   "settings": {
     "executionOrder": "v1",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "callerPolicy": "workflowsFromSameOwner"
   },
-  "staticData": null,
-  "meta": null,
-  "pinData": {},
-  "versionId": "503e64ff-1b6a-4f05-9593-a8851a7cd68c",
-  "activeVersionId": null,
-  "versionCounter": 49,
-  "triggerCount": 0,
-  "tags": [],
-  "shared": [
-    {
-      "updatedAt": "2026-01-07T07:15:01.978Z",
-      "createdAt": "2026-01-07T07:15:01.978Z",
-      "role": "workflow:owner",
-      "workflowId": "QCPX0Z7inOavmDlM",
-      "projectId": "1uTvCtZTXcZZgYo6",
-      "project": {
-        "updatedAt": "2025-11-07T10:21:21.281Z",
-        "createdAt": "2025-11-07T10:17:33.127Z",
-        "id": "1uTvCtZTXcZZgYo6",
-        "name": "Khuong Nguyen <nguyendangkhuong96@gmail.com>",
-        "type": "personal",
-        "icon": null,
-        "description": null,
-        "creatorId": "9896ea82-dabd-4a0c-aef6-2e69d1cb5764"
-      }
-    }
-  ]
+  "active": false
 }
