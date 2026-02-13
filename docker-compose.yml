@@ -112,7 +112,7 @@ services:
       context: ./n8n-custom-mcp
     restart: always
     ports:
-      - "3002:3000"
+      - "3000:3000"
     environment:
       - N8N_HOST=http://n8n:5678
       - N8N_API_KEY=${N8N_API_KEY}

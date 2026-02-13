@@ -44,7 +44,7 @@ EXPOSE 3000
 
 # Healthcheck to ensure the server is responding
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-  CMD nc -z localhost ${PORT} || exit 1
+  CMD node -e "const http = require('http'); http.get('http://localhost:' + (process.env.PORT || 3000) + '/', (r) => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1)).setTimeout(5000, () => process.exit(1));"
 
 # Default command — runs the server natively
 CMD ["node", "dist/index.js"]
