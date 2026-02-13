@@ -1,12 +1,12 @@
-# Data directories (Docker volumes)
-db_data/
-n8n_data/
-redis_data/
+# Data directories (Docker volumes) — only root level
+/db_data/
+/n8n_data/
+/redis_data/
 
 # Environment files with secrets
 .env
 
-# Backup files
+# Old backup files (replaced by backup/ folder)
 .env.backup
 workflows-backup.json
 
