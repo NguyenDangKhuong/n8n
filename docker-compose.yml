@@ -64,6 +64,7 @@ services:
       - N8N_SKIP_WEBHOOK_AUTHENTICATION=true
       - NODES_EXCLUDE=[]
       - N8N_RESTRICT_FILE_ACCESS_TO=/files/
+      - N8N_SKIP_WEBHOOK_DEREGISTRATION_SHUTDOWN=true
     depends_on:
       postgres:
         condition: service_healthy

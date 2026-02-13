@@ -4,6 +4,8 @@
 
 MCP (Model Context Protocol) server cho phép AI agents quản lý n8n workflows qua giao thức chuẩn. Hỗ trợ các AI platforms: OpenClaw, Claude Desktop, và bất kỳ client nào hỗ trợ MCP.
 
+> Source code nằm trong repo chính: `n8n/n8n-custom-mcp/` (đã tách khỏi upstream `duynghien/n8n-custom-mcp`)
+
 **URL:** `http://localhost:3002/mcp`
 **Transport:** SSE/Hybrid (Streamable HTTP)
 **Tools:** 31 tools
@@ -19,8 +21,8 @@ MCP (Model Context Protocol) server cho phép AI agents quản lý n8n workflows
 | `update_workflow` | Cập nhật workflow |
 | `delete_workflow` | Xoá workflow |
 | `activate_workflow` | Bật/tắt workflow |
-| `execute_workflow` | ⚠️ **Không hỗ trợ** — n8n Public API không cho phép execute trực tiếp |
-| `trigger_webhook` | Kích hoạt workflow qua webhook (thay thế execute) |
+| `execute_workflow` | ✅ Smart fallback: webhook → activate (xem chi tiết bên dưới) |
+| `trigger_webhook` | Kích hoạt workflow qua webhook path |
 
 ### Executions
 | Tool | Mô tả |
@@ -115,6 +117,39 @@ curl -X POST http://localhost:3002/mcp \
        }}}'
 ```
 
+## execute_workflow — Smart Fallback
+
+n8n Public API **không hỗ trợ** `POST /workflows/{id}/execute` (trả 405). MCP server đã được fix với **smart fallback** trong `n8n-api-service.ts`:
+
+1. **Thử API trước** → nếu n8n version sau hỗ trợ, dùng trực tiếp
+2. **Tìm Webhook node** → auto activate + trigger webhook → chạy ngay
+3. **Không có Webhook** → activate workflow → chạy khi trigger fire (schedule, event...)
+
+```bash
+# Execute workflow có webhook → chạy ngay
+curl -X POST http://localhost:3002/mcp \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/call",
+       "params":{"name":"execute_workflow","arguments":{"id":"<workflow-id>"}}}'
+# → {"executionMethod":"webhook-trigger","result":{"status":200,"data":{"message":"Workflow was started"}}}
+```
+
+## Kết quả test (13/02/2026)
+
+| # | Tool | Kết quả |
+|---|------|--------|
+| 1 | `list_workflows` | ✅ 18 workflows |
+| 2 | `get_workflow` | ✅ full JSON + nodes |
+| 3 | `execute_workflow` | ✅ webhook-trigger, status 200 |
+| 4 | `activate_workflow` on/off | ✅ |
+| 5 | `create_workflow` | ✅ (cần `settings: {}`) |
+| 6 | `update_workflow` | ✅ (gửi `name`, `nodes` top-level) |
+| 7 | `delete_workflow` | ✅ |
+| 8 | `trigger_webhook` | ✅ status 200 |
+| 9 | `list/get_execution` | ✅ |
+
+> **Lưu ý:** Webhook mới tạo qua API cần ~5-10s để n8n đăng ký trong queue mode.
+
 ## Tích hợp OpenClaw
 
 OpenClaw kết nối MCP server qua **Skill system** bằng `curl` commands.
@@ -164,8 +199,8 @@ docker exec n8n-n8n-mcp-1 sh -c 'curl -s http://n8n:5678/api/v1/workflows \
   -H "X-N8N-API-KEY: $N8N_API_KEY" | head -c 100'
 ```
 
-### tools/call trả về 501 Not Implemented
-Hybrid handler cần xử lý `tools/call`. Xem [troubleshooting.md](./troubleshooting.md).
+### tools/call trả về 501 Not Implemented ✅ (ĐÃ FIX)
+Đã rewrite hybrid handler trong `index.ts`. Xem [troubleshooting.md](./troubleshooting.md).
 
-### execute_workflow trả về "POST method not allowed"
-n8n Public API không hỗ trợ execute. Dùng `trigger_webhook` hoặc `activate_workflow` thay thế.
+### execute_workflow trả về "POST method not allowed" ✅ (ĐÃ FIX)
+Đã rewrite với smart fallback. Xem phần "execute_workflow — Smart Fallback" ở trên.

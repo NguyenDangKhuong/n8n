@@ -147,7 +147,21 @@ curl -s -X POST http://localhost:3002/mcp \
 # Workflow không có webhook → activated
 # Response: {"executionMethod":"activated","message":"Workflow activated. It will run when its trigger fires."}
 ```
+
+## Webhook 404 sau khi restart n8n
+
+### Nguyên nhân
+n8n mặc định **deregister tất cả webhooks** khi shutdown. Trong queue mode, webhooks cần thời gian để re-register → 404 tạm thời.
+
+### Giải pháp ✅ (ĐÃ FIX)
+Thêm env var giữ webhooks khi restart:
+
+```yaml
+environment:
+  - N8N_SKIP_WEBHOOK_DEREGISTRATION_SHUTDOWN=true
 ```
+
+> **Lưu ý:** Webhook mới tạo qua API cần ~5-10s để n8n đăng ký trong queue mode. Webhook đã có sẵn (tạo qua UI) hoạt động ngay.
 
 ## MCP "Authentication failed: unauthorized"
 
@@ -175,7 +189,7 @@ FFmpeg libs được isolate tại `/opt/ffmpeg-libs/`, wrapper scripts tự set
 
 ```bash
 # Kiểm tra FFmpeg
-docker exec n8n-mcp ffmpeg -version
+docker exec n8n-test ffmpeg -version
 
 # Nếu lỗi, rebuild
 docker compose build --no-cache
@@ -190,7 +204,7 @@ File phải nằm trong `/files/`:
 ls ./local-files/
 
 # Trong container
-docker exec n8n-mcp ls /files/
+docker exec n8n-test ls /files/
 ```
 
 ## Webhook không hoạt động
@@ -198,22 +212,25 @@ docker exec n8n-mcp ls /files/
 ### 1. Kiểm tra workflow active
 Vào n8n UI → Workflow → Toggle phải **ON** (xanh lá)
 
-### 2. Test trực tiếp
+### 2. Kiểm tra `N8N_SKIP_WEBHOOK_DEREGISTRATION_SHUTDOWN=true`
+Không có biến này → webhook bị deregister khi n8n restart.
+
+### 3. Test trực tiếp
 ```bash
 curl -X POST http://localhost:5678/webhook/test \
   -H "Content-Type: application/json" \
   -d '{"test":"data"}'
 ```
 
-### 3. Re-register webhook
+### 4. Re-register webhook
 ```
 Toggle OFF → Save → Toggle ON
 ```
 
-### 4. Kiểm tra biến môi trường
+### 5. Kiểm tra biến môi trường
 ```yaml
 WEBHOOK_URL: https://n8n.thetaphoa.store/  # Phải đúng domain
-N8N_PROXY_HOPS: 1                          # > 0 nếu có proxy (nhưng sẽ ảnh hưởng API!)
+N8N_PROXY_HOPS: 1                          # > 0 nếu có proxy
 ```
 
 ## AI Agent timeout

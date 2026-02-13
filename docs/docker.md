@@ -8,7 +8,7 @@
 | `redis` | redis:alpine | internal | Queue manager (Bull) |
 | `n8n` | n8n-with-ffmpeg:latest | 5678 | n8n chính + FFmpeg |
 | `n8n-worker` | n8n-with-ffmpeg:latest | - | Worker xử lý queue |
-| `n8n-mcp` | n8n-custom-mcp | 3001 | MCP Server cho AI agents |
+| `n8n-mcp` | n8n-custom-mcp | 3002 | MCP Server cho AI agents |
 
 ## Dockerfile (n8n + FFmpeg)
 
@@ -64,6 +64,28 @@ Xem file [docker-compose.yml](../docker-compose.yml) đầy đủ. Các điểm 
 - n8n-worker xử lý workflow execution
 - Redis làm message queue (Bull)
 
+### PostgreSQL dùng để làm gì?
+
+Lưu **tất cả dữ liệu** của n8n:
+- **Workflows** (JSON cấu trúc các node, connections)
+- **Credentials** (API keys, tokens — đã mã hóa bằng `N8N_ENCRYPTION_KEY`)
+- **Execution history** (lịch sử chạy, input/output data)
+- **Users & settings**
+
+Nếu không có PostgreSQL, n8n sẽ dùng SQLite (chậm, không scale).
+
+### Redis dùng để làm gì?
+
+Là **hàng đợi công việc** giữa n8n main và worker:
+
+```
+[Webhook trigger] → n8n main nhận request
+                  → đẩy job vào Redis queue
+                  → n8n-worker lấy job từ Redis → thực thi workflow
+```
+
+Nếu không cần worker (chạy nhẹ), có thể bỏ Redis + worker + đổi `EXECUTIONS_MODE=regular`.
+
 ### Biến môi trường (từ .env)
 
 | Biến | Mô tả |
@@ -82,10 +104,9 @@ Xem file [docker-compose.yml](../docker-compose.yml) đầy đủ. Các điểm 
 | `N8N_PROXY_HOPS` | `1` | Proxy hops (trust X-Forwarded) |
 | `N8N_SKIP_WEBHOOK_AUTHENTICATION` | `true` | Bỏ xác thực webhook |
 | `N8N_RUNNERS_ENABLED` | `true` | Bật task runner cho Code nodes |
-| `N8N_DISABLE_PRODUCTION_MAIN_PROCESS` | `true` | Webhook chạy riêng |
-| `N8N_SKIP_WEBHOOK_DEREGISTRATION_SHUTDOWN` | `true` | Giữ webhook khi restart |
+| `N8N_SKIP_WEBHOOK_DEREGISTRATION_SHUTDOWN` | `true` | Giữ webhook khi restart (fix 404) |
 | `N8N_RESTRICT_FILE_ACCESS_TO` | `/files/` | Giới hạn file access |
-| `N8N_PUBLIC_API_DISABLED` | `false` | Bật public API |
+| `N8N_PUBLIC_API_DISABLED` | `false` | Bật public API (cần cho MCP) |
 | `N8N_SECURE_COOKIE` | `false` | Tắt secure cookie (HTTP nội bộ) |
 
 ## Volumes
@@ -99,7 +120,7 @@ Xem file [docker-compose.yml](../docker-compose.yml) đầy đủ. Các điểm 
 
 ## Network
 
-Tất cả services dùng network `n8n_mcp_net` (bridge):
+Tất cả services dùng network `n8n_test_net` (bridge):
 - n8n → postgres:5432
 - n8n → redis:6379
 - n8n-mcp → n8n:5678 (internal)
@@ -125,7 +146,7 @@ docker compose logs n8n --tail 50   # Last 50
 docker compose build --no-cache
 
 # Exec vào container
-docker exec -it n8n-mcp sh
+docker exec n8n-test sh
 
 # Kiểm tra FFmpeg
 docker exec n8n-mcp ffmpeg -version
