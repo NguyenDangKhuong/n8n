@@ -117,6 +117,38 @@ n8n-worker:
   command: worker
 ```
 
+## ReadWriteFile "is not writable" — chỉ lỗi khi chạy auto flow
+
+### Triệu chứng
+- Run manual (bấm Test) → **OK**
+- Run auto/production (webhook, schedule trigger) → **lỗi**: `The file "/files/temp_video_0.mp4" is not writable.`
+
+### Nguyên nhân
+Khi dùng `EXECUTIONS_MODE=queue`:
+- **Run tay** → chạy trên container **n8n** (main)
+- **Auto flow** → chạy trên container **n8n-worker**
+
+Worker **thiếu** `N8N_RESTRICT_FILE_ACCESS_TO=/files/`. Không set env này → n8n mặc định **block tất cả file access**.
+
+> [!IMPORTANT]
+> Phải đảm bảo **cả 2 container** (n8n + n8n-worker) đều có **cùng env vars** liên quan đến file access.
+
+### Giải pháp ✅ (ĐÃ FIX)
+Thêm đầy đủ env vars vào **cả n8n và n8n-worker**:
+
+```yaml
+# Cho cả 2 services: n8n và n8n-worker
+environment:
+  - N8N_RESTRICT_FILE_ACCESS_TO=/files/
+  - N8N_BLOCK_FILE_ACCESS_TO_N8N_FILES=false
+  - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false
+```
+
+Sau đó restart:
+```bash
+docker compose up -d --force-recreate n8n n8n-worker
+```
+
 ## MCP "tools/call" trả về 501 Not Implemented
 
 ### Nguyên nhân
@@ -189,7 +221,7 @@ FFmpeg libs được isolate tại `/opt/ffmpeg-libs/`, wrapper scripts tự set
 
 ```bash
 # Kiểm tra FFmpeg
-docker exec n8n-test ffmpeg -version
+docker exec n8n ffmpeg -version
 
 # Nếu lỗi, rebuild
 docker compose build --no-cache
@@ -204,7 +236,7 @@ File phải nằm trong `/files/`:
 ls ./local-files/
 
 # Trong container
-docker exec n8n-test ls /files/
+docker exec n8n ls /files/
 ```
 
 ## Webhook không hoạt động

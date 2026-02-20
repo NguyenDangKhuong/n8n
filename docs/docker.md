@@ -146,7 +146,7 @@ docker compose logs n8n --tail 50   # Last 50
 docker compose build --no-cache
 
 # Exec vào container
-docker exec n8n-test sh
+docker exec n8n sh
 
 # Kiểm tra FFmpeg
 docker exec n8n-mcp ffmpeg -version

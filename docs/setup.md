@@ -132,8 +132,8 @@ server {
 
 ```bash
 # Export TẤT CẢ workflows — CLI luôn hoạt động, không bị ảnh hưởng bởi lỗi API
-docker exec n8n-test n8n export:workflow --all --output=/home/node/.n8n/backup.json
-docker cp n8n-test:/home/node/.n8n/backup.json ./workflows-backup.json
+docker exec n8n n8n export:workflow --all --output=/home/node/.n8n/backup.json
+docker cp n8n:/home/node/.n8n/backup.json ./workflows-backup.json
 ```
 
 ### Export workflows (API)
@@ -146,8 +146,8 @@ curl -s http://localhost:5678/api/v1/workflows \
 ### Import workflows (CLI)
 
 ```bash
-docker cp ./workflows-backup.json n8n-test:/home/node/.n8n/backup.json
-docker exec n8n-test n8n import:workflow --input=/home/node/.n8n/backup.json
+docker cp ./workflows-backup.json n8n:/home/node/.n8n/backup.json
+docker exec n8n n8n import:workflow --input=/home/node/.n8n/backup.json
 ```
 
 ### Backup thư mục data
